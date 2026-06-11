@@ -70,6 +70,17 @@ Objectif :
 - tracer les visuels IA ;
 - appliquer la mention obligatoire.
 
+Livrables validés :
+
+- table `media_assets` ;
+- bucket privé `media-assets` ;
+- upload réservé aux rôles `administrator`, `validator` et `contributor` ;
+- lecture pour utilisateurs actifs ;
+- page `/media` ;
+- page `/media/new` ;
+- mention IA obligatoire si le média est généré par IA ;
+- aucun lien encore avec fiches sources, contenus ou planning.
+
 ## Sprint 4 - Fiches sources
 
 Objectif :

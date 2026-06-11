@@ -2,6 +2,10 @@ import type { ConnectorStatus } from "@/modules/connectors/domain/connector-prov
 import type { AiProviderStatus } from "@/modules/ai-providers/domain/ai-provider";
 import type { ChannelStatus } from "@/modules/channels/domain/channel";
 import type { UserRole } from "@/modules/users/domain/user-role";
+import type {
+  MediaAssetStatus,
+  MediaFileType,
+} from "@/modules/media/domain/media-asset";
 import type { JsonValue } from "@/types/common";
 
 export type Database = {
@@ -169,6 +173,65 @@ export type Database = {
           target_percentage?: number;
           is_active?: boolean;
           sort_order?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      media_assets: {
+        Row: {
+          id: string;
+          storage_bucket: string;
+          storage_path: string;
+          file_name: string;
+          file_type: MediaFileType;
+          mime_type: string;
+          file_size: number;
+          title: string | null;
+          description: string | null;
+          alt_text: string | null;
+          credit: string | null;
+          is_ai_generated: boolean;
+          ai_visual_notice: string | null;
+          status: MediaAssetStatus;
+          uploaded_by_profile_id: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          storage_bucket: string;
+          storage_path: string;
+          file_name: string;
+          file_type: MediaFileType;
+          mime_type: string;
+          file_size: number;
+          title?: string | null;
+          description?: string | null;
+          alt_text?: string | null;
+          credit?: string | null;
+          is_ai_generated?: boolean;
+          ai_visual_notice?: string | null;
+          status?: MediaAssetStatus;
+          uploaded_by_profile_id?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          storage_bucket?: string;
+          storage_path?: string;
+          file_name?: string;
+          file_type?: MediaFileType;
+          mime_type?: string;
+          file_size?: number;
+          title?: string | null;
+          description?: string | null;
+          alt_text?: string | null;
+          credit?: string | null;
+          is_ai_generated?: boolean;
+          ai_visual_notice?: string | null;
+          status?: MediaAssetStatus;
+          uploaded_by_profile_id?: string | null;
           created_at?: string;
           updated_at?: string;
         };
