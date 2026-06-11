@@ -12,6 +12,7 @@ import type {
   GenerationMode,
   MasterContentStatus,
 } from "@/modules/master-content/domain/master-content";
+import type { ChannelVariantStatus } from "@/modules/channel-variants/domain/channel-variant";
 
 export type Database = {
   public: {
@@ -117,6 +118,77 @@ export type Database = {
           label?: string;
           status?: ChannelStatus;
           sort_order?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      channel_variants: {
+        Row: {
+          id: string;
+          master_content_id: string;
+          channel_id: string;
+          title: string;
+          body: string | null;
+          excerpt: string | null;
+          hashtags: string[];
+          call_to_action: string | null;
+          status: ChannelVariantStatus;
+          generation_mode: GenerationMode;
+          ai_provider_key: string | null;
+          ai_model_key: string | null;
+          generated_prompt: string | null;
+          wordpress_category_id: string | null;
+          seo_title: string | null;
+          seo_description: string | null;
+          pinterest_board: string | null;
+          google_business_post_type: string | null;
+          created_by_profile_id: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          master_content_id: string;
+          channel_id: string;
+          title: string;
+          body?: string | null;
+          excerpt?: string | null;
+          hashtags?: string[];
+          call_to_action?: string | null;
+          status?: ChannelVariantStatus;
+          generation_mode?: GenerationMode;
+          ai_provider_key?: string | null;
+          ai_model_key?: string | null;
+          generated_prompt?: string | null;
+          wordpress_category_id?: string | null;
+          seo_title?: string | null;
+          seo_description?: string | null;
+          pinterest_board?: string | null;
+          google_business_post_type?: string | null;
+          created_by_profile_id?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          master_content_id?: string;
+          channel_id?: string;
+          title?: string;
+          body?: string | null;
+          excerpt?: string | null;
+          hashtags?: string[];
+          call_to_action?: string | null;
+          status?: ChannelVariantStatus;
+          generation_mode?: GenerationMode;
+          ai_provider_key?: string | null;
+          ai_model_key?: string | null;
+          generated_prompt?: string | null;
+          wordpress_category_id?: string | null;
+          seo_title?: string | null;
+          seo_description?: string | null;
+          pinterest_board?: string | null;
+          google_business_post_type?: string | null;
+          created_by_profile_id?: string | null;
           created_at?: string;
           updated_at?: string;
         };

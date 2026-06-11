@@ -126,6 +126,16 @@ Objectif :
 - préparer les variantes Pinterest ;
 - préparer les variantes Google Business.
 
+Livrables validés :
+
+- table `channel_variants` ;
+- pages `/channel-variants`, `/channel-variants/new` et `/channel-variants/[id]` ;
+- création manuelle de déclinaisons par canal V1 ;
+- relation avec un contenu maître ;
+- champs préparatoires WordPress, LinkedIn, Pinterest et Google Business ;
+- champs de traçabilité IA préparés sans appel fournisseur ;
+- aucun planning, aucune validation avancée, aucun connecteur externe et aucune publication.
+
 ## Sprint 7 - Validation et planning
 
 Objectif :
