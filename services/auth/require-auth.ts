@@ -13,8 +13,12 @@ export async function requireAuth() {
     redirect("/login");
   }
 
+  if (!currentUser.profile) {
+    redirect("/login?error=missing_profile");
+  }
+
   if (currentUser.profile && !currentUser.profile.isActive) {
-    redirect("/login");
+    redirect("/login?error=inactive_profile");
   }
 
   return currentUser;

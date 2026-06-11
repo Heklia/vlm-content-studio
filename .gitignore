@@ -9,3 +9,4 @@ dist
 .env.production.local
 *.tsbuildinfo
 .next-dev*.log
+supabase/.temp
