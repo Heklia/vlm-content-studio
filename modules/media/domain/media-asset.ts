@@ -20,6 +20,7 @@ export type MediaAsset = {
   credit: string | null;
   isAiGenerated: boolean;
   aiVisualNotice: string | null;
+  isPrimary: boolean;
   status: MediaAssetStatus;
   uploadedByProfileId: string | null;
   createdAt: string;
@@ -49,4 +50,3 @@ export function inferMediaFileType(mimeType: string): MediaFileType {
 
   return "other";
 }
-

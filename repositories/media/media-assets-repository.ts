@@ -19,6 +19,7 @@ function mapMediaAsset(
     credit: row.credit,
     isAiGenerated: row.is_ai_generated,
     aiVisualNotice: row.ai_visual_notice,
+    isPrimary: row.is_primary,
     status: row.status,
     uploadedByProfileId: row.uploaded_by_profile_id,
     createdAt: row.created_at,

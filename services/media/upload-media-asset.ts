@@ -53,42 +53,56 @@ export async function uploadMediaAsset(formData: FormData) {
     redirect("/media/new?error=forbidden");
   }
 
-  const file = formData.get("file");
+  const files = formData
+    .getAll("files")
+    .filter((value): value is File => value instanceof File && value.size > 0);
 
-  if (!(file instanceof File) || file.size === 0) {
+  if (files.length === 0) {
     redirect("/media/new?error=missing_file");
   }
 
+  const primaryFileIndexValue = getTextValue(formData, "primary_file_index");
+  const primaryFileIndex =
+    primaryFileIndexValue === null ? 0 : Number(primaryFileIndexValue);
   const isAiGenerated = formData.get("is_ai_generated") === "on";
   const aiVisualNotice = getTextValue(formData, "ai_visual_notice");
+  const title = getTextValue(formData, "title");
+  const description = getTextValue(formData, "description");
+  const altText = getTextValue(formData, "alt_text");
+  const credit = getTextValue(formData, "credit");
 
   if (isAiGenerated && !aiVisualNotice) {
     redirect("/media/new?error=missing_ai_notice");
   }
 
   const supabase = await createClient();
-  const storagePath = buildStoragePath(file);
 
-  await uploadPrivateFile(supabase, mediaAssetsBucket, storagePath, file);
+  for (const [index, file] of files.entries()) {
+    const storagePath = buildStoragePath(file);
+    const isPrimary = index === primaryFileIndex || files.length === 1;
 
-  await createMediaAsset(supabase, {
-    ai_visual_notice: isAiGenerated
-      ? (aiVisualNotice ?? mandatoryAiVisualNotice)
-      : null,
-    alt_text: getTextValue(formData, "alt_text"),
-    credit: getTextValue(formData, "credit"),
-    description: getTextValue(formData, "description"),
-    file_name: file.name,
-    file_size: file.size,
-    file_type: inferMediaFileType(file.type),
-    is_ai_generated: isAiGenerated,
-    mime_type: file.type || "application/octet-stream",
-    status: "active",
-    storage_bucket: mediaAssetsBucket,
-    storage_path: storagePath,
-    title: getTextValue(formData, "title"),
-    uploaded_by_profile_id: profile.id,
-  });
+    await uploadPrivateFile(supabase, mediaAssetsBucket, storagePath, file);
+
+    await createMediaAsset(supabase, {
+      ai_visual_notice: isAiGenerated
+        ? (aiVisualNotice ?? mandatoryAiVisualNotice)
+        : null,
+      alt_text: altText,
+      credit,
+      description,
+      file_name: file.name,
+      file_size: file.size,
+      file_type: inferMediaFileType(file.type),
+      is_ai_generated: isAiGenerated,
+      is_primary: isPrimary,
+      mime_type: file.type || "application/octet-stream",
+      status: "active",
+      storage_bucket: mediaAssetsBucket,
+      storage_path: storagePath,
+      title: files.length === 1 || isPrimary ? title : null,
+      uploaded_by_profile_id: profile.id,
+    });
+  }
 
   redirect("/media");
 }

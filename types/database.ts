@@ -192,6 +192,7 @@ export type Database = {
           credit: string | null;
           is_ai_generated: boolean;
           ai_visual_notice: string | null;
+          is_primary: boolean;
           status: MediaAssetStatus;
           uploaded_by_profile_id: string | null;
           created_at: string;
@@ -211,6 +212,7 @@ export type Database = {
           credit?: string | null;
           is_ai_generated?: boolean;
           ai_visual_notice?: string | null;
+          is_primary?: boolean;
           status?: MediaAssetStatus;
           uploaded_by_profile_id?: string | null;
           created_at?: string;
@@ -230,6 +232,7 @@ export type Database = {
           credit?: string | null;
           is_ai_generated?: boolean;
           ai_visual_notice?: string | null;
+          is_primary?: boolean;
           status?: MediaAssetStatus;
           uploaded_by_profile_id?: string | null;
           created_at?: string;

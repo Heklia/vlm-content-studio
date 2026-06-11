@@ -19,6 +19,9 @@ Le Sprint 3 met en place la gestion des médias sans créer les fiches sources, 
 - Imposer la mention IA si `is_ai_generated = true`.
 - Ajouter les pages `/media` et `/media/new`.
 - Ne pas lier les médias aux fiches sources ou contenus au Sprint 3.
+- Permettre l’import de plusieurs médias dans une même action.
+- Identifier un média principal dans un import afin de préparer les futurs usages éditoriaux.
+- Expliquer l’intérêt des champs de métadonnées dans l’interface.
 
 ## Compatibilité Odoo
 
@@ -43,4 +46,3 @@ Champs préparés pour Odoo :
 - Les prochains sprints pourront relier les médias aux fiches sources.
 - Les visuels IA sont identifiables et encadrés.
 - Les fichiers restent privés dans Supabase Storage.
-

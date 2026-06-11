@@ -36,6 +36,7 @@ export default async function MediaPage() {
             <tr>
               <th className="px-4 py-3 font-medium">Média</th>
               <th className="px-4 py-3 font-medium">Type</th>
+              <th className="px-4 py-3 font-medium">Principal</th>
               <th className="px-4 py-3 font-medium">IA</th>
               <th className="px-4 py-3 font-medium">Statut</th>
               <th className="px-4 py-3 font-medium">Ajouté le</th>
@@ -44,7 +45,7 @@ export default async function MediaPage() {
           <tbody>
             {mediaAssets.length === 0 ? (
               <tr>
-                <td className="px-4 py-8 text-center text-[var(--muted)]" colSpan={5}>
+                <td className="px-4 py-8 text-center text-[var(--muted)]" colSpan={6}>
                   Aucun média pour le moment.
                 </td>
               </tr>
@@ -75,6 +76,11 @@ export default async function MediaPage() {
                   </td>
                   <td className="px-4 py-3">{asset.fileType}</td>
                   <td className="px-4 py-3">
+                    <StatusBadge tone={asset.isPrimary ? "success" : "muted"}>
+                      {asset.isPrimary ? "Oui" : "Non"}
+                    </StatusBadge>
+                  </td>
+                  <td className="px-4 py-3">
                     <StatusBadge tone={asset.isAiGenerated ? "muted" : "default"}>
                       {asset.isAiGenerated ? "Oui" : "Non"}
                     </StatusBadge>
@@ -98,4 +104,3 @@ export default async function MediaPage() {
     </section>
   );
 }
-
