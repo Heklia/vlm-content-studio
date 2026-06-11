@@ -2,76 +2,83 @@
 
 ## Objectif
 
-Le Sprint 0 prepare VLM Content Studio sans developper de fonctionnalites metier.
+Le Sprint 0 prépare VLM Content Studio sans développer de fonctionnalités métier.
 
-L'objectif est de definir une architecture lisible, evolutive et compatible avec :
+L’objectif est de définir une architecture lisible, évolutive et compatible avec :
 
-- Vercel pour le deploiement ;
-- Supabase pour l'authentification, la base de donnees et le stockage ;
-- PostgreSQL comme modele de donnees principal ;
+- Vercel pour le déploiement ;
+- Supabase pour l’authentification, la base de données et le stockage ;
+- PostgreSQL comme modèle de données principal ;
 - une future migration vers Odoo Community.
 
 ## Couches applicatives
 
-### Domaine metier
+### Domaine métier
 
-Le domaine metier regroupe les concepts stables de l'application :
+Le domaine métier regroupe les concepts stables de l’application :
 
 - utilisateurs ;
-- roles ;
-- parametres editoriaux ;
+- rôles ;
+- paramètres éditoriaux ;
 - piliers de contenu ;
-- medias ;
+- médias ;
 - fiches sources ;
-- contenu maitre ;
-- declinaisons multicanales ;
-- planning editorial ;
+- contenu maître ;
+- déclinaisons multicanales ;
+- planning éditorial ;
 - validation ;
 - connecteurs ;
 - tableau de bord.
 
-Cette couche ne doit pas dependre directement de Supabase, Vercel, WordPress ou d'un fournisseur IA.
+Cette couche ne doit pas dépendre directement de Supabase, Vercel, WordPress ou d’un fournisseur IA.
 
 ### Interface utilisateur
 
-L'interface sera construite avec Next.js App Router.
+L’interface sera construite avec Next.js App Router.
 
-Les ecrans devront appeler des services ou cas d'usage applicatifs. Ils ne devront pas executer directement de requetes Supabase.
+Les écrans devront appeler des services ou cas d’usage applicatifs. Ils ne devront pas exécuter directement de requêtes Supabase.
 
 ### Repositories
 
-La couche `repositories` fera le lien entre la logique applicative et les donnees.
+La couche `repositories` fera le lien entre la logique applicative et les données.
 
-Elle permettra de remplacer plus facilement Supabase/PostgreSQL par une autre source de donnees ou par des modeles Odoo plus tard.
+Elle permettra de remplacer plus facilement Supabase/PostgreSQL par une autre source de données ou par des modèles Odoo plus tard.
 
 ### Infrastructure
 
-La couche `infrastructure` contiendra les implementations techniques :
+La couche `infrastructure` contiendra les implémentations techniques :
 
 - client Supabase ;
-- acces Storage ;
+- accès Storage ;
 - connecteurs externes ;
 - services de publication ;
 - fournisseurs IA.
 
 ### Services
 
-La couche `services` regroupera les operations applicatives transverses :
+La couche `services` regroupera les opérations applicatives transverses :
 
-- generation de contenu ;
-- preparation de publication ;
+- génération de contenu ;
+- préparation de publication ;
 - changement de statut ;
-- calculs de repartition editoriale ;
+- calculs de répartition éditoriale ;
 - orchestration de connecteurs.
 
-## Regles structurantes
+## Règles structurantes
 
-- Aucun ecran ne doit acceder directement a Supabase.
-- Aucun connecteur externe ne doit etre appele directement depuis un composant UI.
-- Aucun fournisseur IA ne doit etre code en dur dans le domaine metier.
-- Les statuts editoriaux doivent etre centralises.
-- Les roles doivent etre documentes et appliques cote donnees via politiques de securite.
-- Les noms metier doivent rester compatibles avec une future migration Odoo.
+- Aucun écran ne doit accéder directement à Supabase.
+- Aucun connecteur externe ne doit être appelé directement depuis un composant UI.
+- Aucun fournisseur IA ne doit être codé en dur dans le domaine métier.
+- Les statuts éditoriaux doivent être centralisés.
+- Les rôles doivent être documentés et appliqués côté données via politiques de sécurité.
+- Les noms métier doivent rester compatibles avec une future migration Odoo.
+
+## Responsabilités des dossiers
+
+- `modules` : logique métier organisée par domaine fonctionnel.
+- `repositories` : accès aux données uniquement.
+- `services` : orchestration métier, génération, publication et automatisations.
+- `infrastructure` : clients techniques externes Supabase, IA, connecteurs et stockage.
 
 ## Structure des dossiers
 
@@ -93,51 +100,51 @@ Futur dossier Next.js App Router.
 
 ### `modules`
 
-Organisation fonctionnelle par domaine metier.
+Logique métier organisée par domaine fonctionnel.
 
 ### `shared`
 
-Elements reutilisables et non lies a un module unique.
+Éléments réutilisables et non liés à un module unique.
 
 ### `infrastructure`
 
-Implementations techniques et dependances externes.
+Clients techniques externes Supabase, IA, connecteurs et stockage.
 
 ### `repositories`
 
-Interfaces et implementations d'acces aux donnees.
+Accès aux données uniquement.
 
 ### `services`
 
-Cas d'usage applicatifs et orchestration metier.
+Orchestration métier, génération, publication et automatisations.
 
 ### `supabase`
 
-Migrations, donnees de seed et politiques de securite.
+Migrations, données de seed et politiques de sécurité.
 
 ### `types`
 
-Types transverses partages par plusieurs couches.
+Types transverses partagés par plusieurs couches.
 
 ### `docs`
 
-Documentation produit, technique et decisions.
+Documentation produit, technique et décisions.
 
-## Workflow editorial cible
+## Workflow éditorial cible
 
 ```text
 Brouillon
 ↓
-A relire
+À relire
 ↓
-Valide
+Validé
 ↓
-Planifie
+Planifié
 ↓
-Publie
+Publié
 ↓
-Archive
+Archivé
 ```
 
-Ce workflow est documente au Sprint 0 mais ne doit pas encore etre implemente.
+Ce workflow est documenté au Sprint 0 mais ne doit pas encore être implémenté.
 

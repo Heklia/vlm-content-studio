@@ -1,27 +1,27 @@
 # VLM Content Studio
 
-VLM Content Studio est une application metier marketing destinee au groupe VLM et a la BU Les Ateliers VLM.
+VLM Content Studio est une application métier marketing destinée au groupe VLM et à la BU Les Ateliers VLM.
 
-L'application a vocation a aider les equipes a preparer, structurer, valider, planifier et publier des contenus multicanaux, avec une communication professionnelle, industrielle, premium, precise et orientee savoir-faire.
+L’application a vocation à aider les équipes à préparer, structurer, valider, planifier et publier des contenus multicanaux, avec une communication professionnelle, industrielle, premium, précise et orientée savoir-faire.
 
-Ce repository est independant du site WordPress Les Ateliers VLM, du plugin Ateliers VLM Core et du theme enfant BeTheme Child.
+Ce repository est indépendant du site WordPress Les Ateliers VLM, du plugin Ateliers VLM Core et du thème enfant BeTheme Child.
 
 ## Vision produit
 
-VLM Content Studio servira progressivement a :
+VLM Content Studio servira progressivement à :
 
-- gerer des medias ;
-- creer des fiches sources de contenu ;
-- generer des contenus ;
-- preparer des publications multicanales ;
+- gérer des médias ;
+- créer des fiches sources de contenu ;
+- générer des contenus ;
+- préparer des publications multicanales ;
 - planifier les publications ;
 - valider les contenus avant publication ;
 - publier automatiquement ;
-- piloter la strategie editoriale ;
-- alimenter WordPress et les reseaux sociaux ;
-- preparer une future migration vers un module Odoo Community.
+- piloter la stratégie éditoriale ;
+- alimenter WordPress et les réseaux sociaux ;
+- préparer une future migration vers un module Odoo Community.
 
-## Stack validee
+## Stack validée
 
 - Next.js App Router
 - TypeScript
@@ -33,20 +33,27 @@ VLM Content Studio servira progressivement a :
 - Vercel
 - Zod
 
-## Principes d'architecture
+## Principes d’architecture
 
-L'application doit separer clairement :
+L’application doit séparer clairement :
 
-- le domaine metier ;
-- l'interface utilisateur ;
-- l'acces aux donnees ;
+- le domaine métier ;
+- l’interface utilisateur ;
+- l’accès aux données ;
 - les connecteurs externes ;
 - les fournisseurs IA ;
 - les services de publication.
 
-Aucun ecran ne doit acceder directement a Supabase. Les acces aux donnees passeront par une couche `repositories`.
+Aucun écran ne doit accéder directement à Supabase. Les accès aux données passeront par une couche `repositories`.
 
-L'architecture doit aussi rester compatible avec une future migration vers Odoo Community. Les entites metier doivent donc etre nommees et documentees de maniere stable.
+L’architecture doit aussi rester compatible avec une future migration vers Odoo Community. Les entités métier doivent donc être nommées et documentées de manière stable.
+
+## Responsabilités des dossiers
+
+- `modules` : logique métier organisée par domaine fonctionnel.
+- `repositories` : accès aux données uniquement.
+- `services` : orchestration métier, génération, publication et automatisations.
+- `infrastructure` : clients techniques externes Supabase, IA, connecteurs et stockage.
 
 ## Arborescence Sprint 0
 
@@ -89,44 +96,44 @@ vlm-content-studio/
     decisions/
 ```
 
-Cette structure est preparatoire. Elle ne contient pas encore de fonctionnalites metier.
+Cette structure est préparatoire. Elle ne contient pas encore de fonctionnalités métier.
 
 ## Modules futurs
 
 - Utilisateurs
-- Roles
-- Parametres editoriaux
+- Rôles
+- Paramètres éditoriaux
 - Piliers de contenu
-- Medias
+- Médias
 - Fiches sources
-- Contenu maitre
-- Declinaisons multicanales
-- Planning editorial
+- Contenu maître
+- Déclinaisons multicanales
+- Planning éditorial
 - Validation
 - Connecteurs
 - Tableau de bord
 
-## Roles futurs
+## Rôles futurs
 
-- Administrateur : gere les parametres, les utilisateurs, les roles, les connecteurs et les validations critiques.
+- Administrateur : gère les paramètres, les utilisateurs, les rôles, les connecteurs et les validations critiques.
 - Validateur : relit, corrige, approuve ou refuse les contenus.
-- Contributeur : cree des fiches sources, ajoute des medias et prepare des brouillons.
+- Contributeur : crée des fiches sources, ajoute des médias et prépare des brouillons.
 - Consultation : consulte les contenus, le planning et les tableaux de bord sans modifier.
 
-## Workflow editorial futur
+## Workflow éditorial futur
 
 ```text
 Brouillon
 ↓
-A relire
+À relire
 ↓
-Valide
+Validé
 ↓
-Planifie
+Planifié
 ↓
-Publie
+Publié
 ↓
-Archive
+Archivé
 ```
 
 ## Canaux
@@ -146,30 +153,30 @@ V2 :
 
 ## Piliers de contenu initiaux
 
-Les piliers doivent rester parametrables.
+Les piliers doivent rester paramétrables.
 
-- Etudes de projet : 35 %
+- Études de projet : 35 %
 - Savoir-faire : 20 %
-- Materiaux : 20 %
-- Realisations : 10 %
-- Actualites / evenements : 10 %
+- Matériaux : 20 %
+- Réalisations : 10 %
+- Actualités / événements : 10 %
 - Conseils / tendances : 5 %
 
-L'application devra comparer :
+L’application devra comparer :
 
 - cible ;
-- realise ;
-- ecart.
+- réalisé ;
+- écart.
 
-## Categories WordPress futures
+## Catégories WordPress futures
 
-- Realisations
-- Materiaux
-- Evenements
-- Actualites
-- Etudes de projet
+- Réalisations
+- Matériaux
+- Événements
+- Actualités
+- Études de projet
 
-Ces categories sont documentees pour preparation. Aucune synchronisation WordPress n'est developpee au Sprint 0.
+Ces catégories sont documentées pour préparation. Aucune synchronisation WordPress n’est développée au Sprint 0.
 
 ## Mention obligatoire pour les visuels IA
 
@@ -179,34 +186,35 @@ Pour tout visuel généré par IA, la mention obligatoire est :
 
 ## Principes IA
 
-L'application doit prevoir une couche `AI Providers` independante des fournisseurs.
+L’application doit prévoir une couche `AI Providers` indépendante des fournisseurs.
 
-Aucun fournisseur IA ne doit etre code en dur dans la logique metier. Les futurs parametres prevus sont :
+Aucun fournisseur IA ne doit être codé en dur dans la logique métier. Les futurs paramètres prévus sont :
 
 - `default_ai_provider`
 - `default_text_model`
 
-Les fournisseurs potentiels incluent OpenAI, Anthropic, Google Gemini, Ollama, Mistral et d'autres modeles.
+Les fournisseurs potentiels incluent OpenAI, Anthropic, Google Gemini, Ollama, Mistral et d’autres modèles.
 
 ## Roadmap
 
-- Sprint 0 : architecture, documentation, conventions et preparation du repository.
+- Sprint 0 : architecture, documentation, conventions et préparation du repository.
 - Sprint 1 : socle applicatif.
-- Sprint 2 : referentiels.
-- Sprint 3 : medias.
+- Sprint 2 : référentiels.
+- Sprint 3 : médias.
 - Sprint 4 : fiches sources.
-- Sprint 5 : contenu maitre.
-- Sprint 6 : declinaisons multicanales.
+- Sprint 5 : contenu maître.
+- Sprint 6 : déclinaisons multicanales.
 - Sprint 7 : validation et planning.
 - Sprint 8 : connecteur WordPress.
-- Sprint 9 : connecteurs reseaux.
+- Sprint 9 : connecteurs réseaux.
 - Sprint 10 : tableau de bord.
 
-## Documents de reference
+## Documents de référence
 
 - [Architecture](docs/architecture/architecture.md)
 - [Architecture IA](docs/architecture/ai-providers.md)
 - [Migration Odoo](docs/architecture/odoo-migration.md)
-- [Conventions de developpement](docs/architecture/development-conventions.md)
+- [Conventions de développement](docs/architecture/development-conventions.md)
 - [Roadmap](docs/roadmap/sprints.md)
-- [Decisions initiales](docs/decisions/0001-sprint-0-architecture.md)
+- [Décisions initiales](docs/decisions/0001-sprint-0-architecture.md)
+

@@ -2,23 +2,23 @@
 
 ## Objectif
 
-VLM Content Studio devra pouvoir utiliser des modeles IA pour assister la generation de contenus.
+VLM Content Studio devra pouvoir utiliser des modèles IA pour assister la génération de contenus.
 
-Le Sprint 0 ne developpe aucun connecteur IA. Il prepare seulement une architecture independante des fournisseurs.
+Le Sprint 0 ne développe aucun connecteur IA. Il prépare seulement une architecture indépendante des fournisseurs.
 
 ## Principe majeur
 
-Aucun fournisseur IA ne doit etre code en dur dans la logique metier.
+Aucun fournisseur IA ne doit être codé en dur dans la logique métier.
 
-La logique metier doit demander une intention, par exemple :
+La logique métier doit demander une intention, par exemple :
 
-- generer un contenu maitre ;
+- générer un contenu maître ;
 - reformuler pour LinkedIn ;
 - proposer un titre WordPress ;
-- preparer une description Pinterest ;
-- synthetiser une fiche source.
+- préparer une description Pinterest ;
+- synthétiser une fiche source.
 
-La selection du fournisseur et du modele doit rester une decision de configuration.
+La sélection du fournisseur et du modèle doit rester une décision de configuration.
 
 ## Couche `AI Providers`
 
@@ -29,38 +29,38 @@ La future couche `infrastructure/ai-providers` devra isoler les fournisseurs :
 - Google Gemini ;
 - Ollama ;
 - Mistral ;
-- autres modeles.
+- autres modèles.
 
-## Parametres futurs
+## Paramètres futurs
 
-Les parametres suivants sont prevus :
+Les paramètres suivants sont prévus :
 
 - `default_ai_provider`
 - `default_text_model`
 
-Ils pourront etre stockes plus tard dans les parametres editoriaux ou techniques de l'application.
+Ils pourront être stockés plus tard dans les paramètres éditoriaux ou techniques de l’application.
 
-## Responsabilites attendues
+## Responsabilités attendues
 
-La couche IA devra gerer :
+La couche IA devra gérer :
 
-- la selection du fournisseur ;
-- la selection du modele ;
-- la normalisation des entrees ;
+- la sélection du fournisseur ;
+- la sélection du modèle ;
+- la normalisation des entrées ;
 - la normalisation des sorties ;
-- la journalisation des generations ;
-- la conservation du prompt utilise ;
-- la tracabilite des contenus generes.
+- la journalisation des générations ;
+- la conservation du prompt utilisé ;
+- la traçabilité des contenus générés.
 
 ## Ce qui est exclu du Sprint 0
 
 Le Sprint 0 ne doit pas :
 
 - appeler une API IA ;
-- stocker une cle API ;
-- creer un prompt operationnel ;
-- generer du contenu ;
-- developper un connecteur IA.
+- stocker une clé API ;
+- créer un prompt opérationnel ;
+- générer du contenu ;
+- développer un connecteur IA.
 
 ## Mention obligatoire pour les visuels IA
 
@@ -68,4 +68,5 @@ Pour tout visuel généré par IA, la mention obligatoire est :
 
 > Visuel d’illustration réalisé dans le cadre d’une étude de projet.
 
-Cette mention devra etre appliquee plus tard dans les modules medias, contenus generes et publications.
+Cette mention devra être appliquée plus tard dans les modules médias, contenus générés et publications.
+

@@ -1,11 +1,11 @@
-# Conventions de developpement
+# Conventions de développement
 
 ## Langage et framework
 
 - TypeScript pour le code applicatif.
-- Next.js App Router pour l'application web.
+- Next.js App Router pour l’application web.
 - Tailwind CSS pour le style.
-- Zod pour la validation des donnees.
+- Zod pour la validation des données.
 - Supabase pour auth, base et storage.
 
 ## Nommage
@@ -17,37 +17,41 @@
 - Types et interfaces : `PascalCase`
 - Tables PostgreSQL : `snake_case`
 - Colonnes PostgreSQL : `snake_case`
-- Variables d'environnement : `UPPER_SNAKE_CASE`
+- Variables d’environnement : `UPPER_SNAKE_CASE`
 
 ## Organisation
 
-- `modules` contient les domaines fonctionnels.
-- `repositories` contient l'acces aux donnees.
-- `services` contient l'orchestration applicative.
-- `infrastructure` contient les implementations techniques.
-- `shared` contient les elements reutilisables.
-- `docs` contient la documentation et les decisions.
+- `modules` : logique métier organisée par domaine fonctionnel.
+- `repositories` : accès aux données uniquement.
+- `services` : orchestration métier, génération, publication et automatisations.
+- `infrastructure` : clients techniques externes Supabase, IA, connecteurs et stockage.
+- `shared` contient les éléments réutilisables.
+- `docs` contient la documentation et les décisions.
 
-## Regles de dependance
+## Règles de dépendance
 
-- L'interface peut appeler les services applicatifs.
+- L’interface peut appeler les services applicatifs.
 - Les services peuvent appeler les repositories.
-- Les repositories peuvent appeler l'infrastructure de donnees.
-- Le domaine metier ne doit pas dependre de Supabase.
-- Les connecteurs externes doivent rester isoles dans `infrastructure`.
-- Les fournisseurs IA doivent rester isoles dans `infrastructure/ai-providers`.
+- Les repositories peuvent appeler l’infrastructure de données.
+- Le domaine métier ne doit pas dépendre de Supabase.
+- Les connecteurs externes doivent rester isolés dans `infrastructure`.
+- Les fournisseurs IA doivent rester isolés dans `infrastructure/ai-providers`.
+
+## Encodage
+
+Les fichiers de documentation doivent être conservés en UTF-8 afin de préserver les accents français, les apostrophes typographiques et les flèches de workflow.
 
 ## Environnements
 
-Les secrets ne doivent jamais etre commites.
+Les secrets ne doivent jamais être commités.
 
-Un fichier `.env.example` sera ajoute lors de l'initialisation applicative pour documenter les variables attendues.
+Un fichier `.env.example` sera ajouté lors de l’initialisation applicative pour documenter les variables attendues.
 
 ## Documentation
 
 Chaque sprint important doit pouvoir ajouter :
 
-- une note de decision dans `docs/decisions` ;
-- une mise a jour de roadmap si necessaire ;
-- une documentation d'architecture si une frontiere evolue.
+- une note de décision dans `docs/decisions` ;
+- une mise à jour de roadmap si nécessaire ;
+- une documentation d’architecture si une frontière évolue.
 

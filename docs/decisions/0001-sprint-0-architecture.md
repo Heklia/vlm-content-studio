@@ -1,29 +1,29 @@
-# Decision 0001 - Sprint 0 architecture
+# Décision 0001 - Sprint 0 architecture
 
 ## Statut
 
-Validee pour preparation documentaire.
+Validée pour préparation documentaire.
 
 ## Contexte
 
-Le repository `Heklia/vlm-content-studio` est un repository GitHub dedie et vide au demarrage.
+Le repository `Heklia/vlm-content-studio` est un repository GitHub dédié et vide au démarrage.
 
-Le Sprint 0 doit preparer le projet sans developper de fonctionnalites metier.
+Le Sprint 0 doit préparer le projet sans développer de fonctionnalités métier.
 
-## Decisions
+## Décisions
 
 - Utiliser Next.js App Router, TypeScript, Tailwind CSS, Supabase, Supabase Auth, Supabase Storage, PostgreSQL, Vercel et Zod.
-- Organiser le projet autour de modules metier.
-- Isoler les acces donnees dans une couche `repositories`.
-- Isoler les dependances techniques dans `infrastructure`.
-- Prevoir une couche `AI Providers` independante des fournisseurs.
-- Documenter la future migration Odoo des le Sprint 0.
-- Ne pas developper de fonctionnalite metier pendant le Sprint 0.
+- Organiser le projet autour de modules métier.
+- Isoler les accès données dans une couche `repositories`.
+- Isoler les dépendances techniques dans `infrastructure`.
+- Prévoir une couche `AI Providers` indépendante des fournisseurs.
+- Documenter la future migration Odoo dès le Sprint 0.
+- Ne pas développer de fonctionnalité métier pendant le Sprint 0.
 
-## Consequences
+## Conséquences
 
-- Les prochains sprints pourront demarrer sur une base lisible.
+- Les prochains sprints pourront démarrer sur une base lisible.
 - Les choix techniques restent compatibles avec Vercel et Supabase.
-- La future migration Odoo est facilitee par la separation des responsabilites.
-- Les fournisseurs IA pourront etre remplaces sans modifier la logique metier.
+- La future migration Odoo est facilitée par la séparation des responsabilités.
+- Les fournisseurs IA pourront être remplacés sans modifier la logique métier.
 

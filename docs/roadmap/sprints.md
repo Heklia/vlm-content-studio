@@ -4,12 +4,12 @@
 
 Objectif :
 
-- preparer le repository ;
-- documenter l'architecture ;
+- préparer le repository ;
+- documenter l’architecture ;
 - poser les conventions ;
 - cadrer les modules futurs ;
-- preparer la migration Odoo ;
-- preparer l'architecture IA.
+- préparer la migration Odoo ;
+- préparer l’architecture IA.
 
 Livrables :
 
@@ -18,7 +18,7 @@ Livrables :
 - documentation architecture ;
 - documentation IA ;
 - documentation Odoo ;
-- conventions de developpement ;
+- conventions de développement ;
 - roadmap.
 
 ## Sprint 1 - Socle applicatif
@@ -28,26 +28,26 @@ Objectif :
 - initialiser Next.js ;
 - configurer TypeScript ;
 - configurer Tailwind CSS ;
-- preparer Supabase ;
+- préparer Supabase ;
 - mettre en place le layout applicatif ;
-- preparer l'authentification.
+- préparer l’authentification.
 
-## Sprint 2 - Referentiels
-
-Objectif :
-
-- parametrer les roles ;
-- parametrer les canaux ;
-- parametrer les piliers de contenu ;
-- parametrer les categories WordPress ;
-- preparer les parametres editoriaux.
-
-## Sprint 3 - Medias
+## Sprint 2 - Référentiels
 
 Objectif :
 
-- gerer les medias ;
-- preparer Supabase Storage ;
+- paramétrer les rôles ;
+- paramétrer les canaux ;
+- paramétrer les piliers de contenu ;
+- paramétrer les catégories WordPress ;
+- préparer les paramètres éditoriaux.
+
+## Sprint 3 - Médias
+
+Objectif :
+
+- gérer les médias ;
+- préparer Supabase Storage ;
 - documenter les droits ;
 - tracer les visuels IA ;
 - appliquer la mention obligatoire.
@@ -56,34 +56,34 @@ Objectif :
 
 Objectif :
 
-- creer les fiches sources ;
-- relier les medias ;
+- créer les fiches sources ;
+- relier les médias ;
 - associer les piliers ;
-- preparer la matiere de generation.
+- préparer la matière de génération.
 
-## Sprint 5 - Contenu maitre
-
-Objectif :
-
-- produire un contenu maitre a partir d'une fiche source ;
-- garder la tracabilite ;
-- preparer les validations.
-
-## Sprint 6 - Declinaisons multicanales
+## Sprint 5 - Contenu maître
 
 Objectif :
 
-- preparer les variantes WordPress ;
-- preparer les variantes LinkedIn ;
-- preparer les variantes Pinterest ;
-- preparer les variantes Google Business.
+- produire un contenu maître à partir d’une fiche source ;
+- garder la traçabilité ;
+- préparer les validations.
+
+## Sprint 6 - Déclinaisons multicanales
+
+Objectif :
+
+- préparer les variantes WordPress ;
+- préparer les variantes LinkedIn ;
+- préparer les variantes Pinterest ;
+- préparer les variantes Google Business.
 
 ## Sprint 7 - Validation et planning
 
 Objectif :
 
-- appliquer le workflow editorial ;
-- gerer les statuts ;
+- appliquer le workflow éditorial ;
+- gérer les statuts ;
 - planifier les publications ;
 - organiser les validations.
 
@@ -91,18 +91,18 @@ Objectif :
 
 Objectif :
 
-- preparer l'envoi vers WordPress ;
-- mapper les categories ;
+- préparer l’envoi vers WordPress ;
+- mapper les catégories ;
 - tracer les publications ;
-- gerer les erreurs.
+- gérer les erreurs.
 
-## Sprint 9 - Connecteurs reseaux
+## Sprint 9 - Connecteurs réseaux
 
 Objectif :
 
-- preparer LinkedIn ;
-- preparer Pinterest ;
-- preparer Google Business ;
+- préparer LinkedIn ;
+- préparer Pinterest ;
+- préparer Google Business ;
 - documenter Instagram, Facebook et Newsletter pour la V2.
 
 ## Sprint 10 - Tableau de bord
@@ -110,7 +110,7 @@ Objectif :
 Objectif :
 
 - suivre les publications ;
-- comparer cible, realise et ecart ;
+- comparer cible, réalisé et écart ;
 - suivre les piliers de contenu ;
 - suivre les canaux ;
 - suivre les statuts.

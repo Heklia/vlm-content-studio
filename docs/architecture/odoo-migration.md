@@ -1,25 +1,25 @@
-# Preparation migration Odoo
+# Préparation migration Odoo
 
 ## Vision
 
-VLM Content Studio est concu comme :
+VLM Content Studio est conçu comme :
 
 ```text
-Application autonome aujourd'hui
+Application autonome aujourd’hui
 ↓
 Module Odoo Community demain
 ```
 
-Le projet doit rester exploitable sur Vercel et Supabase tout en conservant des frontieres metier compatibles avec une future migration vers Odoo Community.
+Le projet doit rester exploitable sur Vercel et Supabase tout en conservant des frontières métier compatibles avec une future migration vers Odoo Community.
 
 ## Principes
 
-- Stabiliser les noms metier.
-- Eviter de melanger logique metier et acces aux donnees.
+- Stabiliser les noms métier.
+- Éviter de mélanger logique métier et accès aux données.
 - Passer par des repositories.
-- Documenter les entites importantes.
-- Garder les connecteurs externes separes.
-- Eviter les dependances directes entre interface et base de donnees.
+- Documenter les entités importantes.
+- Garder les connecteurs externes séparés.
+- Éviter les dépendances directes entre interface et base de données.
 
 ## Correspondances futures
 
@@ -28,39 +28,39 @@ Le projet doit rester exploitable sur Vercel et Supabase tout en conservant des 
 | `users_profiles` | utilisateurs Odoo |
 | `roles` | groupes et droits Odoo |
 | `editorial_settings` | configuration module Odoo |
-| `content_pillars` | modele Odoo |
-| `channels` | modele Odoo |
-| `media_assets` | pieces jointes ou modele media |
-| `content_sources` | modele Odoo |
-| `master_contents` | modele Odoo |
-| `channel_variants` | modele Odoo |
-| `editorial_planning` | modele Odoo ou calendrier |
-| `validation_steps` | workflow / etats Odoo |
+| `content_pillars` | modèle Odoo |
+| `channels` | modèle Odoo |
+| `media_assets` | pièces jointes ou modèle média |
+| `content_sources` | modèle Odoo |
+| `master_contents` | modèle Odoo |
+| `channel_variants` | modèle Odoo |
+| `editorial_planning` | modèle Odoo ou calendrier |
+| `validation_steps` | workflow / états Odoo |
 | `publication_logs` | historique Odoo |
 | `connectors` | configuration technique Odoo |
 
-## Entites metier a preserver
+## Entités métier à préserver
 
-Les entites suivantes devront etre pensees comme futures classes ou modeles Odoo :
+Les entités suivantes devront être pensées comme futures classes ou modèles Odoo :
 
 - utilisateurs et profils ;
-- roles ;
+- rôles ;
 - piliers de contenu ;
 - canaux ;
-- medias ;
+- médias ;
 - fiches sources ;
-- contenus maitres ;
-- declinaisons ;
-- planning editorial ;
+- contenus maîtres ;
+- déclinaisons ;
+- planning éditorial ;
 - validations ;
 - connecteurs ;
 - historiques de publication.
 
-## Choix a confirmer plus tard
+## Choix à confirmer plus tard
 
-- Strategie de migration des medias.
+- Stratégie de migration des médias.
 - Mapping entre Supabase Auth et utilisateurs Odoo.
 - Gestion des droits et groupes Odoo.
-- Conservation de l'historique des contenus generes.
-- Synchronisation ou migration complete des donnees.
+- Conservation de l’historique des contenus générés.
+- Synchronisation ou migration complète des données.
 
