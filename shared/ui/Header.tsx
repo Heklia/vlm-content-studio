@@ -1,0 +1,11 @@
+export function Header() {
+  return (
+    <header className="border-b border-[var(--border)] bg-[var(--surface)] px-6 py-4">
+      <div className="mx-auto flex max-w-6xl items-center justify-between">
+        <p className="text-sm font-semibold">VLM Content Studio</p>
+        <p className="text-sm text-[var(--muted)]">Socle applicatif</p>
+      </div>
+    </header>
+  );
+}
+

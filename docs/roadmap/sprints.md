@@ -32,6 +32,16 @@ Objectif :
 - mettre en place le layout applicatif ;
 - préparer l’authentification.
 
+Livrables validés :
+
+- application Next.js démarrable ;
+- pages placeholders `/login`, `/dashboard` et `/settings` ;
+- clients Supabase navigateur, serveur et middleware ;
+- repositories pour profils, paramètres et connecteurs ;
+- services d’authentification, permissions et paramètres ;
+- migration Supabase pour `user_profiles`, `app_settings`, `connector_settings` et `audit_logs` ;
+- seed initial des paramètres applicatifs et connecteurs désactivés.
+
 ## Sprint 2 - Référentiels
 
 Objectif :
@@ -114,4 +124,3 @@ Objectif :
 - suivre les piliers de contenu ;
 - suivre les canaux ;
 - suivre les statuts.
-
