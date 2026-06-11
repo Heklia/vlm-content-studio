@@ -7,6 +7,7 @@ import type {
   MediaFileType,
 } from "@/modules/media/domain/media-asset";
 import type { JsonValue } from "@/types/common";
+import type { SourceSheetStatus } from "@/modules/source-sheets/domain/source-sheet";
 
 export type Database = {
   public: {
@@ -235,6 +236,105 @@ export type Database = {
           is_primary?: boolean;
           status?: MediaAssetStatus;
           uploaded_by_profile_id?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      source_sheet_channels: {
+        Row: {
+          id: string;
+          source_sheet_id: string;
+          channel_id: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          source_sheet_id: string;
+          channel_id: string;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          source_sheet_id?: string;
+          channel_id?: string;
+          created_at?: string;
+        };
+      };
+      source_sheet_media: {
+        Row: {
+          id: string;
+          source_sheet_id: string;
+          media_asset_id: string;
+          is_primary: boolean;
+          sort_order: number;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          source_sheet_id: string;
+          media_asset_id: string;
+          is_primary?: boolean;
+          sort_order?: number;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          source_sheet_id?: string;
+          media_asset_id?: string;
+          is_primary?: boolean;
+          sort_order?: number;
+          created_at?: string;
+        };
+      };
+      source_sheets: {
+        Row: {
+          id: string;
+          title: string;
+          summary: string | null;
+          context: string | null;
+          technical_details: string | null;
+          materials: string | null;
+          know_how: string | null;
+          client_or_sector: string | null;
+          location: string | null;
+          content_pillar_id: string | null;
+          wordpress_category_id: string | null;
+          status: SourceSheetStatus;
+          created_by_profile_id: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          title: string;
+          summary?: string | null;
+          context?: string | null;
+          technical_details?: string | null;
+          materials?: string | null;
+          know_how?: string | null;
+          client_or_sector?: string | null;
+          location?: string | null;
+          content_pillar_id?: string | null;
+          wordpress_category_id?: string | null;
+          status?: SourceSheetStatus;
+          created_by_profile_id?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          title?: string;
+          summary?: string | null;
+          context?: string | null;
+          technical_details?: string | null;
+          materials?: string | null;
+          know_how?: string | null;
+          client_or_sector?: string | null;
+          location?: string | null;
+          content_pillar_id?: string | null;
+          wordpress_category_id?: string | null;
+          status?: SourceSheetStatus;
+          created_by_profile_id?: string | null;
           created_at?: string;
           updated_at?: string;
         };

@@ -90,6 +90,16 @@ Objectif :
 - associer les piliers ;
 - préparer la matière de génération.
 
+Livrables validés :
+
+- tables `source_sheets`, `source_sheet_media` et `source_sheet_channels` ;
+- pages `/source-sheets`, `/source-sheets/new` et `/source-sheets/[id]` ;
+- association à un pilier de contenu ;
+- association à une catégorie WordPress cible ;
+- association à des médias existants ;
+- association à des canaux cibles ;
+- aucune génération IA, aucun contenu maître, aucun planning et aucune publication.
+
 ## Sprint 5 - Contenu maître
 
 Objectif :
