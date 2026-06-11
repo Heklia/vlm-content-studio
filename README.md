@@ -33,6 +33,14 @@ VLM Content Studio servira progressivement à :
 - Vercel
 - Zod
 
+## État des connexions externes
+
+Supabase et Vercel sont prévus dans l’architecture cible, mais ils ne sont pas encore connectés à ce stade.
+
+Tant que les variables `NEXT_PUBLIC_SUPABASE_URL` et `NEXT_PUBLIC_SUPABASE_ANON_KEY` ne sont pas configurées, l’application reste en mode socle local non connecté. Dans ce mode, l’application peut démarrer localement, mais les routes protégées redirigent vers `/login`.
+
+Les migrations SQL du Sprint 1 sont prêtes dans le repository, mais elles ne sont pas exécutées tant qu’un projet Supabase n’est pas créé et configuré.
+
 ## Principes d’architecture
 
 L’application doit séparer clairement :
@@ -217,4 +225,3 @@ Les fournisseurs potentiels incluent OpenAI, Anthropic, Google Gemini, Ollama, M
 - [Conventions de développement](docs/architecture/development-conventions.md)
 - [Roadmap](docs/roadmap/sprints.md)
 - [Décisions initiales](docs/decisions/0001-sprint-0-architecture.md)
-

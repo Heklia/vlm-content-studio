@@ -35,3 +35,10 @@ Les tables métier suivantes sont explicitement exclues du Sprint 1 :
 - Les paramètres IA et connecteurs restent configurables sans dépendance fournisseur.
 - Les futures correspondances Odoo restent lisibles grâce aux tables métier stables du socle.
 
+## État de connexion
+
+Supabase et Vercel ne sont pas encore connectés au Sprint 1.
+
+Tant que les variables `NEXT_PUBLIC_SUPABASE_URL` et `NEXT_PUBLIC_SUPABASE_ANON_KEY` ne sont pas configurées, l’application reste en mode socle local non connecté. Les routes protégées redirigent alors vers `/login`.
+
+Les migrations SQL sont prêtes dans `supabase/migrations`, mais elles ne sont pas exécutées tant que le projet Supabase n’est pas créé et configuré.
