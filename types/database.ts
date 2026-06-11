@@ -13,6 +13,9 @@ import type {
   MasterContentStatus,
 } from "@/modules/master-content/domain/master-content";
 import type { ChannelVariantStatus } from "@/modules/channel-variants/domain/channel-variant";
+import type { ValidationReviewStatus } from "@/modules/validation/domain/validation-review";
+import type { ScheduledPublicationStatus } from "@/modules/planning/domain/scheduled-publication";
+import type { ContentWorkflowEventType } from "@/modules/workflow/domain/content-workflow-event";
 
 export type Database = {
   public: {
@@ -395,6 +398,66 @@ export type Database = {
           created_at?: string;
         };
       };
+      content_workflow_events: {
+        Row: {
+          id: string;
+          channel_variant_id: string | null;
+          event_type: ContentWorkflowEventType;
+          from_status: string | null;
+          to_status: string | null;
+          actor_profile_id: string | null;
+          note: string | null;
+          metadata: JsonValue;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          channel_variant_id?: string | null;
+          event_type: ContentWorkflowEventType;
+          from_status?: string | null;
+          to_status?: string | null;
+          actor_profile_id?: string | null;
+          note?: string | null;
+          metadata?: JsonValue;
+          created_at?: string;
+        };
+        Update: never;
+      };
+      scheduled_publications: {
+        Row: {
+          id: string;
+          channel_variant_id: string;
+          channel_id: string;
+          scheduled_for: string;
+          status: ScheduledPublicationStatus;
+          publication_notes: string | null;
+          created_by_profile_id: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          channel_variant_id: string;
+          channel_id: string;
+          scheduled_for: string;
+          status?: ScheduledPublicationStatus;
+          publication_notes?: string | null;
+          created_by_profile_id?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          channel_variant_id?: string;
+          channel_id?: string;
+          scheduled_for?: string;
+          status?: ScheduledPublicationStatus;
+          publication_notes?: string | null;
+          created_by_profile_id?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
       source_sheet_media: {
         Row: {
           id: string;
@@ -470,6 +533,47 @@ export type Database = {
           wordpress_category_id?: string | null;
           status?: SourceSheetStatus;
           created_by_profile_id?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      validation_reviews: {
+        Row: {
+          id: string;
+          channel_variant_id: string;
+          requested_by_profile_id: string | null;
+          reviewed_by_profile_id: string | null;
+          status: ValidationReviewStatus;
+          request_note: string | null;
+          review_note: string | null;
+          requested_at: string;
+          reviewed_at: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          channel_variant_id: string;
+          requested_by_profile_id?: string | null;
+          reviewed_by_profile_id?: string | null;
+          status?: ValidationReviewStatus;
+          request_note?: string | null;
+          review_note?: string | null;
+          requested_at?: string;
+          reviewed_at?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          channel_variant_id?: string;
+          requested_by_profile_id?: string | null;
+          reviewed_by_profile_id?: string | null;
+          status?: ValidationReviewStatus;
+          request_note?: string | null;
+          review_note?: string | null;
+          requested_at?: string;
+          reviewed_at?: string | null;
           created_at?: string;
           updated_at?: string;
         };

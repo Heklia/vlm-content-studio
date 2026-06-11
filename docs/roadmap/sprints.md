@@ -145,6 +145,16 @@ Objectif :
 - planifier les publications ;
 - organiser les validations.
 
+Livrables validés :
+
+- tables `validation_reviews`, `scheduled_publications` et `content_workflow_events` ;
+- pages `/validation`, `/validation/[id]`, `/planning` et `/planning/new` ;
+- demande de validation depuis une déclinaison en brouillon ;
+- validation ou demande de corrections par les rôles autorisés ;
+- planification d’une déclinaison validée ;
+- journal de workflow préparé ;
+- aucune publication réelle, aucun connecteur externe et aucun appel IA.
+
 ## Sprint 8 - Connecteur WordPress
 
 Objectif :

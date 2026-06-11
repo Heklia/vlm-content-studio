@@ -5,14 +5,24 @@ import type {
 } from "@/modules/master-content/domain/master-content";
 import type { WordPressCategory } from "@/modules/wordpress-categories/domain/wordpress-category";
 
-export const channelVariantStatuses = ["draft", "ready", "archived"] as const;
+export const channelVariantStatuses = [
+  "draft",
+  "review",
+  "ready",
+  "scheduled",
+  "published",
+  "archived",
+] as const;
 
 export type ChannelVariantStatus = (typeof channelVariantStatuses)[number];
 
 export const channelVariantStatusLabels: Record<ChannelVariantStatus, string> = {
   archived: "Archivé",
   draft: "Brouillon",
+  published: "Publié",
   ready: "Prêt",
+  review: "À relire",
+  scheduled: "Planifié",
 };
 
 export type ChannelVariant = {

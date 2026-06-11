@@ -6,6 +6,6 @@ export const navigationItems = [
   { href: "/source-sheets", label: "Fiches sources", enabled: true },
   { href: "/master-content", label: "Contenu maître", enabled: true },
   { href: "/channel-variants", label: "Déclinaisons", enabled: true },
-  { href: "/planning", label: "Planning", enabled: false },
-  { href: "/validation", label: "Validation", enabled: false },
+  { href: "/planning", label: "Planning", enabled: true },
+  { href: "/validation", label: "Validation", enabled: true },
 ] as const;

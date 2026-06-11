@@ -117,3 +117,45 @@ export async function createChannelVariant(
 
   return mapChannelVariant(data);
 }
+
+export async function updateChannelVariantStatus(
+  supabase: SupabaseClient<Database>,
+  id: string,
+  status: Database["public"]["Tables"]["channel_variants"]["Update"]["status"],
+) {
+  const channelVariantsTable = supabase.from("channel_variants");
+  const { data, error } = await channelVariantsTable
+    .update({ status } as Parameters<typeof channelVariantsTable.update>[0])
+    .eq("id", id)
+    .select("*")
+    .single();
+
+  if (error) {
+    throw error;
+  }
+
+  return mapChannelVariant(data);
+}
+
+export async function listReadyChannelVariants(
+  supabase: SupabaseClient<Database>,
+) {
+  const { data, error } = await supabase
+    .from("channel_variants")
+    .select(
+      `
+        *,
+        channels ( id, key, label, status ),
+        master_contents ( id, title ),
+        wordpress_categories ( id, label )
+      `,
+    )
+    .eq("status", "ready")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    throw error;
+  }
+
+  return (data as ChannelVariantListRow[]).map(mapChannelVariantListItem);
+}
