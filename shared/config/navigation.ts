@@ -4,6 +4,7 @@ export const navigationItems = [
   { href: "/settings/referentials", label: "Référentiels", enabled: true },
   { href: "/media", label: "Médias", enabled: true },
   { href: "/source-sheets", label: "Fiches sources", enabled: true },
+  { href: "/master-content", label: "Contenu maître", enabled: true },
   { href: "/planning", label: "Planning", enabled: false },
   { href: "/validation", label: "Validation", enabled: false },
 ] as const;

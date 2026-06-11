@@ -8,6 +8,10 @@ import type {
 } from "@/modules/media/domain/media-asset";
 import type { JsonValue } from "@/types/common";
 import type { SourceSheetStatus } from "@/modules/source-sheets/domain/source-sheet";
+import type {
+  GenerationMode,
+  MasterContentStatus,
+} from "@/modules/master-content/domain/master-content";
 
 export type Database = {
   public: {
@@ -236,6 +240,65 @@ export type Database = {
           is_primary?: boolean;
           status?: MediaAssetStatus;
           uploaded_by_profile_id?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      master_contents: {
+        Row: {
+          id: string;
+          source_sheet_id: string | null;
+          title: string;
+          angle: string | null;
+          hook: string | null;
+          body: string | null;
+          key_points: JsonValue;
+          call_to_action: string | null;
+          editorial_notes: string | null;
+          status: MasterContentStatus;
+          generation_mode: GenerationMode;
+          ai_provider_key: string | null;
+          ai_model_key: string | null;
+          generated_prompt: string | null;
+          created_by_profile_id: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          source_sheet_id?: string | null;
+          title: string;
+          angle?: string | null;
+          hook?: string | null;
+          body?: string | null;
+          key_points?: JsonValue;
+          call_to_action?: string | null;
+          editorial_notes?: string | null;
+          status?: MasterContentStatus;
+          generation_mode?: GenerationMode;
+          ai_provider_key?: string | null;
+          ai_model_key?: string | null;
+          generated_prompt?: string | null;
+          created_by_profile_id?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          source_sheet_id?: string | null;
+          title?: string;
+          angle?: string | null;
+          hook?: string | null;
+          body?: string | null;
+          key_points?: JsonValue;
+          call_to_action?: string | null;
+          editorial_notes?: string | null;
+          status?: MasterContentStatus;
+          generation_mode?: GenerationMode;
+          ai_provider_key?: string | null;
+          ai_model_key?: string | null;
+          generated_prompt?: string | null;
+          created_by_profile_id?: string | null;
           created_at?: string;
           updated_at?: string;
         };

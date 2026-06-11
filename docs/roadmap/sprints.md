@@ -108,6 +108,15 @@ Objectif :
 - garder la traçabilité ;
 - préparer les validations.
 
+Livrables validés :
+
+- table `master_contents` ;
+- pages `/master-content`, `/master-content/new` et `/master-content/[id]` ;
+- création manuelle de contenu maître ;
+- relation avec une fiche source ;
+- champs de traçabilité IA préparés sans appel fournisseur ;
+- aucune déclinaison multicanale, aucun planning et aucune publication.
+
 ## Sprint 6 - Déclinaisons multicanales
 
 Objectif :
