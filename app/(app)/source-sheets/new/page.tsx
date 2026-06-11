@@ -18,6 +18,12 @@ const errorMessages: Record<string, string> = {
   missing_title: "Le titre est obligatoire.",
 };
 
+const defaultSelectedChannelKeys = new Set([
+  "wordpress",
+  "linkedin",
+  "pinterest",
+]);
+
 export default async function NewSourceSheetPage({
   searchParams,
 }: NewSourceSheetPageProps) {
@@ -29,6 +35,9 @@ export default async function NewSourceSheetPage({
       getMediaAssets(),
       getWordPressCategories(),
     ]);
+  const connectedChannels = channels.filter(
+    (channel) => channel.status === "enabled",
+  );
   const errorMessage = error ? errorMessages[error] : null;
 
   return (
@@ -167,13 +176,19 @@ export default async function NewSourceSheetPage({
         <fieldset className="rounded-md border border-[var(--border)] p-4">
           <legend className="px-1 text-sm font-medium">Canaux cibles</legend>
           <p className="mt-1 text-xs leading-5 text-[var(--muted)]">
-            Sélectionnez les canaux envisagés. Aucune publication ne sera créée
-            au Sprint 4.
+            Sélectionnez les canaux envisagés. Seuls les canaux connectés sont
+            proposés ici ; les canaux à venir restent masqués. Aucune publication
+            ne sera créée au Sprint 4.
           </p>
           <div className="mt-3 grid gap-2 md:grid-cols-2">
-            {channels.map((channel) => (
+            {connectedChannels.map((channel) => (
               <label className="flex items-center gap-2 text-sm" key={channel.id}>
-                <input name="channel_ids" type="checkbox" value={channel.id} />
+                <input
+                  defaultChecked={defaultSelectedChannelKeys.has(channel.key)}
+                  name="channel_ids"
+                  type="checkbox"
+                  value={channel.id}
+                />
                 <span>{channel.label}</span>
               </label>
             ))}
@@ -229,4 +244,3 @@ export default async function NewSourceSheetPage({
     </section>
   );
 }
-
