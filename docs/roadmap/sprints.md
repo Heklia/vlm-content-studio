@@ -52,6 +52,14 @@ Objectif :
 - paramétrer les catégories WordPress ;
 - préparer les paramètres éditoriaux.
 
+Livrables validés :
+
+- tables `channels`, `content_pillars`, `wordpress_categories` et `ai_providers` ;
+- seeds initiaux des canaux V1/V2, piliers, catégories WordPress et fournisseurs IA ;
+- pages référentiels en lecture seule ;
+- séparation conservée entre canaux éditoriaux et connecteurs techniques ;
+- aucun appel IA, aucune synchronisation WordPress et aucune fonctionnalité métier avancée.
+
 ## Sprint 3 - Médias
 
 Objectif :

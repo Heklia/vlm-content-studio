@@ -1,4 +1,6 @@
 import type { ConnectorStatus } from "@/modules/connectors/domain/connector-provider";
+import type { AiProviderStatus } from "@/modules/ai-providers/domain/ai-provider";
+import type { ChannelStatus } from "@/modules/channels/domain/channel";
 import type { UserRole } from "@/modules/users/domain/user-role";
 import type { JsonValue } from "@/types/common";
 
@@ -31,6 +33,35 @@ export type Database = {
           updated_at?: string;
         };
       };
+      ai_providers: {
+        Row: {
+          id: string;
+          key: string;
+          label: string;
+          status: AiProviderStatus;
+          is_default: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          key: string;
+          label: string;
+          status?: AiProviderStatus;
+          is_default?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          key?: string;
+          label?: string;
+          status?: AiProviderStatus;
+          is_default?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
       audit_logs: {
         Row: {
           id: string;
@@ -51,6 +82,35 @@ export type Database = {
           created_at?: string;
         };
         Update: never;
+      };
+      channels: {
+        Row: {
+          id: string;
+          key: string;
+          label: string;
+          status: ChannelStatus;
+          sort_order: number;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          key: string;
+          label: string;
+          status?: ChannelStatus;
+          sort_order?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          key?: string;
+          label?: string;
+          status?: ChannelStatus;
+          sort_order?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
       };
       connector_settings: {
         Row: {
@@ -77,6 +137,38 @@ export type Database = {
           label?: string;
           status?: ConnectorStatus;
           config?: JsonValue;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      content_pillars: {
+        Row: {
+          id: string;
+          key: string;
+          label: string;
+          target_percentage: number;
+          is_active: boolean;
+          sort_order: number;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          key: string;
+          label: string;
+          target_percentage: number;
+          is_active?: boolean;
+          sort_order?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          key?: string;
+          label?: string;
+          target_percentage?: number;
+          is_active?: boolean;
+          sort_order?: number;
           created_at?: string;
           updated_at?: string;
         };
@@ -113,7 +205,38 @@ export type Database = {
           updated_at?: string;
         };
       };
+      wordpress_categories: {
+        Row: {
+          id: string;
+          slug: string;
+          label: string;
+          wordpress_id: number | null;
+          is_active: boolean;
+          sort_order: number;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          slug: string;
+          label: string;
+          wordpress_id?: number | null;
+          is_active?: boolean;
+          sort_order?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          slug?: string;
+          label?: string;
+          wordpress_id?: number | null;
+          is_active?: boolean;
+          sort_order?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
     };
   };
 };
-
