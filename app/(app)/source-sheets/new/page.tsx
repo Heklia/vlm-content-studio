@@ -4,7 +4,9 @@ import { getContentPillars } from "@/services/referentials/get-content-pillars";
 import { getMediaAssets } from "@/services/media/get-media-assets";
 import { getWordPressCategories } from "@/services/referentials/get-wordpress-categories";
 import { FormField } from "@/shared/ui/FormField";
+import { FormUnloadGuard } from "@/shared/ui/FormUnloadGuard";
 import { PageTitle } from "@/shared/ui/PageTitle";
+import { SubmitButton } from "@/shared/ui/SubmitButton";
 
 type NewSourceSheetPageProps = {
   searchParams: Promise<{
@@ -58,6 +60,7 @@ export default async function NewSourceSheetPage({
         action={createSourceSheetAction}
         className="space-y-6 rounded-md border border-[var(--border)] bg-[var(--surface)] p-6"
       >
+        <FormUnloadGuard />
         <FormField
           helpText="Titre interne clair pour reconnaître la fiche."
           label="Titre"
@@ -233,12 +236,12 @@ export default async function NewSourceSheetPage({
         </fieldset>
 
         <div className="flex justify-end border-t border-[var(--border)] pt-5">
-          <button
-            className="rounded-md bg-[var(--accent)] px-5 py-2.5 text-sm font-semibold text-white"
-            type="submit"
+          <SubmitButton
+            className="rounded-md bg-[var(--accent)] px-5 py-2.5 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-60"
+            pendingLabel="Création en cours..."
           >
             Créer la fiche source
-          </button>
+          </SubmitButton>
         </div>
       </form>
     </section>

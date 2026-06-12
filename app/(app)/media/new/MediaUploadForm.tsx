@@ -4,6 +4,8 @@ import { useState } from "react";
 import { mandatoryAiVisualNotice } from "@/modules/media/domain/media-asset";
 import { uploadMediaAsset } from "@/services/media/upload-media-asset";
 import { FormField } from "@/shared/ui/FormField";
+import { FormUnloadGuard } from "@/shared/ui/FormUnloadGuard";
+import { SubmitButton } from "@/shared/ui/SubmitButton";
 
 export function MediaUploadForm() {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
@@ -14,6 +16,7 @@ export function MediaUploadForm() {
       action={uploadMediaAsset}
       className="space-y-6 rounded-md border border-[var(--border)] bg-[var(--surface)] p-6"
     >
+      <FormUnloadGuard />
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[var(--border)] pb-5">
         <div>
           <h2 className="text-lg font-semibold">Importer des médias</h2>
@@ -21,12 +24,12 @@ export function MediaUploadForm() {
             Vous pouvez importer un ou plusieurs fichiers en une seule fois.
           </p>
         </div>
-        <button
-          className="rounded-md bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-white"
-          type="submit"
+        <SubmitButton
+          className="rounded-md bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-60"
+          pendingLabel="Import en cours..."
         >
           Importer la sélection
-        </button>
+        </SubmitButton>
       </div>
 
       <FormField
@@ -142,14 +145,13 @@ export function MediaUploadForm() {
       </FormField>
 
       <div className="flex justify-end border-t border-[var(--border)] pt-5">
-        <button
-          className="rounded-md bg-[var(--accent)] px-5 py-2.5 text-sm font-semibold text-white"
-          type="submit"
+        <SubmitButton
+          className="rounded-md bg-[var(--accent)] px-5 py-2.5 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-60"
+          pendingLabel="Import en cours..."
         >
           Importer la sélection
-        </button>
+        </SubmitButton>
       </div>
     </form>
   );
 }
-
