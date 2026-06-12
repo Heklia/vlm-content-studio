@@ -13,7 +13,9 @@ function formatFileSize(size: number) {
 }
 
 export function MediaQuickDropzone() {
+  const formRef = useRef<HTMLFormElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isAutoSubmitting, setIsAutoSubmitting] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const totalSelectedSize = selectedFiles.reduce(
@@ -21,7 +23,7 @@ export function MediaQuickDropzone() {
     0,
   );
 
-  function setFiles(files: File[]) {
+  function setFiles(files: File[], options?: { autoSubmit?: boolean }) {
     if (files.length === 0) {
       return;
     }
@@ -39,6 +41,13 @@ export function MediaQuickDropzone() {
     }
 
     fileInputRef.current.files = dataTransfer.files;
+
+    if (options?.autoSubmit) {
+      setIsAutoSubmitting(true);
+      window.setTimeout(() => {
+        formRef.current?.requestSubmit();
+      }, 0);
+    }
   }
 
   function openFilePicker() {
@@ -49,6 +58,7 @@ export function MediaQuickDropzone() {
     <form
       action={uploadMediaAsset}
       className="h-full rounded-md border border-[var(--border)] bg-[var(--surface)] p-5"
+      ref={formRef}
     >
       <input name="primary_file_index" type="hidden" value="0" />
       <div
@@ -83,7 +93,7 @@ export function MediaQuickDropzone() {
           event.preventDefault();
           event.stopPropagation();
           setIsDragging(false);
-          setFiles(Array.from(event.dataTransfer.files));
+          setFiles(Array.from(event.dataTransfer.files), { autoSubmit: true });
         }}
         onKeyDown={(event) => {
           if (event.key === "Enter" || event.key === " ") {
@@ -96,15 +106,17 @@ export function MediaQuickDropzone() {
       >
         <p className="text-sm font-semibold">Cliquez ou déposez vos médias ici</p>
         <p className="mt-1 text-xs text-[var(--muted)]">
-          Import rapide depuis la bibliothèque. Pour compléter les métadonnées
-          avant import, utilisez “Ajouter un média”.
+          Les fichiers sont importés automatiquement dans la bibliothèque. Pour
+          compléter les métadonnées avant import, utilisez “Ajouter un média”.
         </p>
         <input
           className="sr-only"
           multiple
           name="files"
           onChange={(event) => {
-            setFiles(Array.from(event.currentTarget.files ?? []));
+            setFiles(Array.from(event.currentTarget.files ?? []), {
+              autoSubmit: true,
+            });
           }}
           onClick={(event) => {
             event.stopPropagation();
@@ -121,12 +133,18 @@ export function MediaQuickDropzone() {
             {selectedFiles.length} fichier{selectedFiles.length > 1 ? "s" : ""} ·{" "}
             {formatFileSize(totalSelectedSize)}
           </p>
-          <SubmitButton
-            className="rounded-md bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-60"
-            pendingLabel="Import en cours..."
-          >
-            Importer la sélection
-          </SubmitButton>
+          {isAutoSubmitting ? (
+            <p className="rounded-md bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-white">
+              Import en cours...
+            </p>
+          ) : (
+            <SubmitButton
+              className="rounded-md bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-60"
+              pendingLabel="Import en cours..."
+            >
+              Importer la sélection
+            </SubmitButton>
+          )}
         </div>
       ) : null}
     </form>
