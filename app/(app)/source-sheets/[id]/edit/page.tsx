@@ -237,6 +237,7 @@ export default async function EditSourceSheetPage({
         </fieldset>
 
         <MediaSelector
+          draftKey={`vlm-content-studio:source-sheets:${sourceSheet.id}`}
           initialPrimaryMediaAssetId={primaryMediaAssetId}
           initialSelectedIds={selectedMediaIds}
           mediaAssets={mediaAssets}

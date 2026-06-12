@@ -199,7 +199,10 @@ export default async function NewSourceSheetPage({
           </div>
         </fieldset>
 
-        <MediaSelector mediaAssets={mediaAssets} />
+        <MediaSelector
+          draftKey="vlm-content-studio:source-sheets:new"
+          mediaAssets={mediaAssets}
+        />
 
         <div className="flex justify-end border-t border-[var(--border)] pt-5">
           <SubmitButton

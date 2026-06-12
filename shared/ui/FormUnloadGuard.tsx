@@ -15,6 +15,7 @@ export function FormUnloadGuard({
 }: FormUnloadGuardProps) {
   const markerRef = useRef<HTMLSpanElement>(null);
   const isDirtyRef = useRef(false);
+  const hasRestoredRef = useRef(false);
   const isSubmittingRef = useRef(false);
   const saveTimeoutRef = useRef<number | null>(null);
 
@@ -36,8 +37,8 @@ export function FormUnloadGuard({
           element instanceof HTMLTextAreaElement,
       );
 
-    const saveDraft = () => {
-      if (!draftKey) {
+    const saveDraft = (options?: { force?: boolean }) => {
+      if (!draftKey || (!options?.force && !isDirtyRef.current)) {
         return;
       }
 
@@ -96,7 +97,7 @@ export function FormUnloadGuard({
       }, 120);
     };
 
-    const restoreDraft = (options?: { onlyEmptyFields?: boolean }) => {
+    const restoreDraft = () => {
       if (!draftKey) {
         return;
       }
@@ -131,10 +132,6 @@ export function FormUnloadGuard({
             continue;
           }
 
-          if (options?.onlyEmptyFields && field.value) {
-            continue;
-          }
-
           if (field instanceof HTMLSelectElement && field.multiple) {
             const values = Array.isArray(value) ? value : [value];
 
@@ -149,6 +146,7 @@ export function FormUnloadGuard({
         }
 
         isDirtyRef.current = true;
+        hasRestoredRef.current = true;
       } catch {
         window.localStorage.removeItem(draftKey);
       }
@@ -222,29 +220,19 @@ export function FormUnloadGuard({
       }
     };
 
-    const restoreAfterLateRender = () => {
-      restoreDraft({ onlyEmptyFields: true });
-    };
-
     const handlePageShow = () => {
-      restoreDraft({ onlyEmptyFields: true });
+      if (!isDirtyRef.current && !hasRestoredRef.current) {
+        restoreDraft();
+      }
     };
 
     const handleVisibilityChange = () => {
       if (document.visibilityState === "hidden") {
-        saveDraft();
-      } else {
-        restoreDraft({ onlyEmptyFields: true });
+        saveDraft({ force: isDirtyRef.current });
       }
     };
 
-    const observer = new MutationObserver(() => {
-      window.setTimeout(restoreAfterLateRender, 0);
-    });
-
     restoreDraft();
-    window.setTimeout(restoreAfterLateRender, 250);
-    observer.observe(form, { childList: true, subtree: true });
     form.addEventListener("input", markDirty);
     form.addEventListener("change", markDirty);
     form.addEventListener("submit", markSubmitting);
@@ -260,9 +248,8 @@ export function FormUnloadGuard({
       }
 
       if (!isSubmittingRef.current) {
-        saveDraft();
+        saveDraft({ force: isDirtyRef.current });
       }
-      observer.disconnect();
       form.removeEventListener("input", markDirty);
       form.removeEventListener("change", markDirty);
       form.removeEventListener("submit", markSubmitting);

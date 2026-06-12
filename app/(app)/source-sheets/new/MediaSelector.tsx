@@ -10,6 +10,7 @@ type MediaSelectorAsset = {
 };
 
 type MediaSelectorProps = {
+  draftKey?: string;
   initialPrimaryMediaAssetId?: string;
   initialSelectedIds?: string[];
   mediaAssets: MediaSelectorAsset[];
@@ -20,15 +21,43 @@ function getMediaLabel(asset: MediaSelectorAsset) {
 }
 
 export function MediaSelector({
+  draftKey,
   initialPrimaryMediaAssetId = "",
   initialSelectedIds = [],
   mediaAssets,
 }: MediaSelectorProps) {
+  const initialDraft = (() => {
+    if (!draftKey || typeof window === "undefined") {
+      return null;
+    }
+
+    const rawDraft = window.localStorage.getItem(draftKey);
+
+    if (!rawDraft) {
+      return null;
+    }
+
+    try {
+      return JSON.parse(rawDraft) as Record<string, string | string[]>;
+    } catch {
+      window.localStorage.removeItem(draftKey);
+      return null;
+    }
+  })();
+  const draftSelectedIds = Array.isArray(initialDraft?.media_asset_ids)
+    ? initialDraft.media_asset_ids
+    : null;
+  const draftPrimaryMediaAssetId =
+    typeof initialDraft?.primary_media_asset_id === "string"
+      ? initialDraft.primary_media_asset_id
+      : null;
   const [isOpen, setIsOpen] = useState(true);
   const [query, setQuery] = useState("");
-  const [selectedIds, setSelectedIds] = useState<string[]>(initialSelectedIds);
+  const [selectedIds, setSelectedIds] = useState<string[]>(
+    draftSelectedIds ?? initialSelectedIds,
+  );
   const [primaryMediaAssetId, setPrimaryMediaAssetId] = useState(
-    initialPrimaryMediaAssetId,
+    draftPrimaryMediaAssetId ?? initialPrimaryMediaAssetId,
   );
 
   const selectedAssets = mediaAssets.filter((asset) =>
