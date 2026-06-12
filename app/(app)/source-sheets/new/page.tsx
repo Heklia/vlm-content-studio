@@ -3,6 +3,7 @@ import { getChannels } from "@/services/referentials/get-channels";
 import { getContentPillars } from "@/services/referentials/get-content-pillars";
 import { getMediaAssets } from "@/services/media/get-media-assets";
 import { getWordPressCategories } from "@/services/referentials/get-wordpress-categories";
+import { MediaSelector } from "@/app/(app)/source-sheets/new/MediaSelector";
 import { FormField } from "@/shared/ui/FormField";
 import { FormUnloadGuard } from "@/shared/ui/FormUnloadGuard";
 import { PageTitle } from "@/shared/ui/PageTitle";
@@ -198,42 +199,7 @@ export default async function NewSourceSheetPage({
           </div>
         </fieldset>
 
-        <fieldset className="rounded-md border border-[var(--border)] p-4">
-          <legend className="px-1 text-sm font-medium">Médias associés</legend>
-          <p className="mt-1 text-xs leading-5 text-[var(--muted)]">
-            Associez des médias déjà importés. Le média principal servira de
-            repère pour les futurs contenus.
-          </p>
-          {mediaAssets.length === 0 ? (
-            <p className="mt-3 text-sm text-[var(--muted)]">
-              Aucun média disponible. Ajoutez d’abord des médias dans la bibliothèque.
-            </p>
-          ) : (
-            <div className="mt-3 space-y-3">
-              {mediaAssets.map((asset, index) => (
-                <div className="rounded-md border border-[var(--border)] p-3" key={asset.id}>
-                  <label className="flex items-center gap-2 text-sm font-medium">
-                    <input
-                      name="media_asset_ids"
-                      type="checkbox"
-                      value={asset.id}
-                    />
-                    <span>{asset.title ?? asset.fileName}</span>
-                  </label>
-                  <label className="mt-2 flex items-center gap-2 text-xs text-[var(--muted)]">
-                    <input
-                      defaultChecked={index === 0}
-                      name="primary_media_asset_id"
-                      type="radio"
-                      value={asset.id}
-                    />
-                    <span>Définir comme média principal</span>
-                  </label>
-                </div>
-              ))}
-            </div>
-          )}
-        </fieldset>
+        <MediaSelector mediaAssets={mediaAssets} />
 
         <div className="flex justify-end border-t border-[var(--border)] pt-5">
           <SubmitButton
