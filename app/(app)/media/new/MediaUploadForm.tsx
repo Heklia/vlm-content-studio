@@ -7,9 +7,18 @@ import { FormField } from "@/shared/ui/FormField";
 import { FormUnloadGuard } from "@/shared/ui/FormUnloadGuard";
 import { SubmitButton } from "@/shared/ui/SubmitButton";
 
+function formatFileSize(size: number) {
+  if (size < 1024 * 1024) {
+    return `${Math.max(1, Math.round(size / 1024))} Ko`;
+  }
+
+  return `${(size / 1024 / 1024).toFixed(1)} Mo`;
+}
+
 export function MediaUploadForm() {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [primaryFileIndex, setPrimaryFileIndex] = useState("0");
+  const totalSelectedSize = selectedFiles.reduce((total, file) => total + file.size, 0);
 
   return (
     <form
@@ -49,6 +58,18 @@ export function MediaUploadForm() {
           type="file"
         />
       </FormField>
+
+      {selectedFiles.length > 0 ? (
+        <div className="rounded-md border border-[var(--border)] bg-[var(--background)] p-4 text-sm">
+          <p className="font-medium">
+            {selectedFiles.length} fichier{selectedFiles.length > 1 ? "s" : ""} sélectionné{selectedFiles.length > 1 ? "s" : ""}
+          </p>
+          <p className="mt-1 text-[var(--muted)]">
+            Poids total : {formatFileSize(totalSelectedSize)}. Limite actuelle de
+            l’import : 50 Mo par envoi.
+          </p>
+        </div>
+      ) : null}
 
       {selectedFiles.length > 1 ? (
         <fieldset className="rounded-md border border-[var(--border)] p-4">
