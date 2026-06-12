@@ -6,8 +6,10 @@ import { requireAuth } from "@/services/auth/require-auth";
 import { requestValidationAction } from "@/services/validation/request-validation";
 import { getValidationReviews } from "@/services/validation/get-validation-reviews";
 import { FormField } from "@/shared/ui/FormField";
+import { FormUnloadGuard } from "@/shared/ui/FormUnloadGuard";
 import { PageTitle } from "@/shared/ui/PageTitle";
 import { StatusBadge } from "@/shared/ui/StatusBadge";
+import { SubmitButton } from "@/shared/ui/SubmitButton";
 
 type ValidationPageProps = {
   searchParams: Promise<{
@@ -55,6 +57,7 @@ export default async function ValidationPage({
           action={requestValidationAction}
           className="space-y-4 rounded-md border border-[var(--border)] bg-[var(--surface)] p-5"
         >
+          <FormUnloadGuard draftKey="vlm-content-studio:validation:request" />
           <div>
             <h2 className="text-base font-semibold">Demander une relecture</h2>
             <p className="mt-1 text-sm text-[var(--muted)]">
@@ -92,12 +95,12 @@ export default async function ValidationPage({
           </FormField>
 
           <div className="flex justify-end">
-            <button
-              className="rounded-md bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-white"
-              type="submit"
+            <SubmitButton
+              className="rounded-md bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-60"
+              pendingLabel="Envoi..."
             >
               Envoyer en validation
-            </button>
+            </SubmitButton>
           </div>
         </form>
       ) : null}

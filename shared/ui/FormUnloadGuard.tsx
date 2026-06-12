@@ -16,6 +16,7 @@ export function FormUnloadGuard({
   const markerRef = useRef<HTMLSpanElement>(null);
   const isDirtyRef = useRef(false);
   const isSubmittingRef = useRef(false);
+  const saveTimeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
     const form = markerRef.current?.closest("form");
@@ -81,7 +82,21 @@ export function FormUnloadGuard({
       window.localStorage.setItem(draftKey, JSON.stringify(draft));
     };
 
-    const restoreDraft = () => {
+    const scheduleSaveDraft = () => {
+      if (!draftKey) {
+        return;
+      }
+
+      if (saveTimeoutRef.current) {
+        window.clearTimeout(saveTimeoutRef.current);
+      }
+
+      saveTimeoutRef.current = window.setTimeout(() => {
+        saveDraft();
+      }, 120);
+    };
+
+    const restoreDraft = (options?: { onlyEmptyFields?: boolean }) => {
       if (!draftKey) {
         return;
       }
@@ -116,6 +131,10 @@ export function FormUnloadGuard({
             continue;
           }
 
+          if (options?.onlyEmptyFields && field.value) {
+            continue;
+          }
+
           if (field instanceof HTMLSelectElement && field.multiple) {
             const values = Array.isArray(value) ? value : [value];
 
@@ -138,13 +157,17 @@ export function FormUnloadGuard({
     const markDirty = () => {
       if (!isSubmittingRef.current) {
         isDirtyRef.current = true;
-        saveDraft();
+        scheduleSaveDraft();
       }
     };
 
     const markSubmitting = () => {
       isSubmittingRef.current = true;
       isDirtyRef.current = false;
+
+      if (draftKey) {
+        window.localStorage.removeItem(draftKey);
+      }
     };
 
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
@@ -199,20 +222,54 @@ export function FormUnloadGuard({
       }
     };
 
+    const restoreAfterLateRender = () => {
+      restoreDraft({ onlyEmptyFields: true });
+    };
+
+    const handlePageShow = () => {
+      restoreDraft({ onlyEmptyFields: true });
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "hidden") {
+        saveDraft();
+      } else {
+        restoreDraft({ onlyEmptyFields: true });
+      }
+    };
+
+    const observer = new MutationObserver(() => {
+      window.setTimeout(restoreAfterLateRender, 0);
+    });
+
     restoreDraft();
+    window.setTimeout(restoreAfterLateRender, 250);
+    observer.observe(form, { childList: true, subtree: true });
     form.addEventListener("input", markDirty);
     form.addEventListener("change", markDirty);
     form.addEventListener("submit", markSubmitting);
     form.addEventListener("keydown", handleKeyDown);
     document.addEventListener("click", handleDocumentClick, true);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    window.addEventListener("pageshow", handlePageShow);
     window.addEventListener("beforeunload", handleBeforeUnload);
 
     return () => {
+      if (saveTimeoutRef.current) {
+        window.clearTimeout(saveTimeoutRef.current);
+      }
+
+      if (!isSubmittingRef.current) {
+        saveDraft();
+      }
+      observer.disconnect();
       form.removeEventListener("input", markDirty);
       form.removeEventListener("change", markDirty);
       form.removeEventListener("submit", markSubmitting);
       form.removeEventListener("keydown", handleKeyDown);
       document.removeEventListener("click", handleDocumentClick, true);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      window.removeEventListener("pageshow", handlePageShow);
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, [draftKey, message, preventEnterSubmit]);

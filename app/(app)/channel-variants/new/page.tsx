@@ -3,7 +3,9 @@ import { getChannels } from "@/services/referentials/get-channels";
 import { getWordPressCategories } from "@/services/referentials/get-wordpress-categories";
 import { getMasterContents } from "@/services/master-content/get-master-contents";
 import { FormField } from "@/shared/ui/FormField";
+import { FormUnloadGuard } from "@/shared/ui/FormUnloadGuard";
 import { PageTitle } from "@/shared/ui/PageTitle";
+import { SubmitButton } from "@/shared/ui/SubmitButton";
 
 type NewChannelVariantPageProps = {
   searchParams: Promise<{
@@ -58,6 +60,7 @@ export default async function NewChannelVariantPage({
         action={createChannelVariantAction}
         className="space-y-6 rounded-md border border-[var(--border)] bg-[var(--surface)] p-6"
       >
+        <FormUnloadGuard draftKey="vlm-content-studio:channel-variants:new" />
         <div className="grid gap-5 md:grid-cols-2">
           <FormField
             helpText="Contenu central à adapter. Il garde le fond éditorial commun aux différents canaux."
@@ -231,12 +234,12 @@ export default async function NewChannelVariantPage({
         </div>
 
         <div className="flex justify-end border-t border-[var(--border)] pt-5">
-          <button
-            className="rounded-md bg-[var(--accent)] px-5 py-2.5 text-sm font-semibold text-white"
-            type="submit"
+          <SubmitButton
+            className="rounded-md bg-[var(--accent)] px-5 py-2.5 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-60"
+            pendingLabel="Création en cours..."
           >
             Créer la déclinaison
-          </button>
+          </SubmitButton>
         </div>
       </form>
     </section>

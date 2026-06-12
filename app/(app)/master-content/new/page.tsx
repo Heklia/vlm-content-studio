@@ -1,7 +1,9 @@
 import { createMasterContentAction } from "@/services/master-content/create-master-content";
 import { getSourceSheets } from "@/services/source-sheets/get-source-sheets";
 import { FormField } from "@/shared/ui/FormField";
+import { FormUnloadGuard } from "@/shared/ui/FormUnloadGuard";
 import { PageTitle } from "@/shared/ui/PageTitle";
+import { SubmitButton } from "@/shared/ui/SubmitButton";
 
 type NewMasterContentPageProps = {
   searchParams: Promise<{
@@ -40,6 +42,7 @@ export default async function NewMasterContentPage({
         action={createMasterContentAction}
         className="space-y-6 rounded-md border border-[var(--border)] bg-[var(--surface)] p-6"
       >
+        <FormUnloadGuard draftKey="vlm-content-studio:master-content:new" />
         <FormField
           helpText="Fiche source utilisée comme matière éditoriale. Le contenu maître reste manuel au Sprint 5."
           label="Fiche source"
@@ -137,15 +140,14 @@ export default async function NewMasterContentPage({
         </div>
 
         <div className="flex justify-end border-t border-[var(--border)] pt-5">
-          <button
-            className="rounded-md bg-[var(--accent)] px-5 py-2.5 text-sm font-semibold text-white"
-            type="submit"
+          <SubmitButton
+            className="rounded-md bg-[var(--accent)] px-5 py-2.5 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-60"
+            pendingLabel="Création en cours..."
           >
             Créer le contenu maître
-          </button>
+          </SubmitButton>
         </div>
       </form>
     </section>
   );
 }
-

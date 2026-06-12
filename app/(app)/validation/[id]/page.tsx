@@ -7,8 +7,10 @@ import { approveValidationAction } from "@/services/validation/approve-validatio
 import { getValidationReview } from "@/services/validation/get-validation-review";
 import { requestChangesAction } from "@/services/validation/request-changes";
 import { FormField } from "@/shared/ui/FormField";
+import { FormUnloadGuard } from "@/shared/ui/FormUnloadGuard";
 import { PageTitle } from "@/shared/ui/PageTitle";
 import { StatusBadge } from "@/shared/ui/StatusBadge";
+import { SubmitButton } from "@/shared/ui/SubmitButton";
 
 type ValidationDetailPageProps = {
   params: Promise<{
@@ -123,6 +125,7 @@ export default async function ValidationDetailPage({
             action={approveValidationAction}
             className="space-y-4 rounded-md border border-emerald-200 bg-emerald-50 p-5"
           >
+            <FormUnloadGuard draftKey={`vlm-content-studio:validation:${review.id}:approve`} />
             <input name="review_id" type="hidden" value={review.id} />
             <FormField
               helpText="Note optionnelle conservée dans la demande et dans le journal de workflow."
@@ -133,18 +136,19 @@ export default async function ValidationDetailPage({
                 name="review_note"
               />
             </FormField>
-            <button
-              className="rounded-md bg-emerald-700 px-4 py-2 text-sm font-semibold text-white"
-              type="submit"
+            <SubmitButton
+              className="rounded-md bg-emerald-700 px-4 py-2 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-60"
+              pendingLabel="Validation..."
             >
               Valider
-            </button>
+            </SubmitButton>
           </form>
 
           <form
             action={requestChangesAction}
             className="space-y-4 rounded-md border border-[var(--border)] bg-[var(--surface)] p-5"
           >
+            <FormUnloadGuard draftKey={`vlm-content-studio:validation:${review.id}:changes`} />
             <input name="review_id" type="hidden" value={review.id} />
             <FormField
               helpText="Expliquez précisément les corrections attendues avant une nouvelle demande."
@@ -155,12 +159,12 @@ export default async function ValidationDetailPage({
                 name="review_note"
               />
             </FormField>
-            <button
-              className="rounded-md border border-[var(--border)] px-4 py-2 text-sm font-semibold"
-              type="submit"
+            <SubmitButton
+              className="rounded-md border border-[var(--border)] px-4 py-2 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-60"
+              pendingLabel="Envoi..."
             >
               Demander corrections
-            </button>
+            </SubmitButton>
           </form>
         </div>
       ) : null}
