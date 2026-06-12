@@ -25,7 +25,7 @@ export function MediaUploadForm() {
       action={uploadMediaAsset}
       className="space-y-6 rounded-md border border-[var(--border)] bg-[var(--surface)] p-6"
     >
-      <FormUnloadGuard />
+      <FormUnloadGuard draftKey="vlm-content-studio:media:new" />
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[var(--border)] pb-5">
         <div>
           <h2 className="text-lg font-semibold">Importer des médias</h2>

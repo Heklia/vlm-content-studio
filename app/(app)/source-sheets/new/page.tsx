@@ -60,7 +60,7 @@ export default async function NewSourceSheetPage({
         action={createSourceSheetAction}
         className="space-y-6 rounded-md border border-[var(--border)] bg-[var(--surface)] p-6"
       >
-        <FormUnloadGuard />
+        <FormUnloadGuard draftKey="vlm-content-studio:source-sheets:new" />
         <FormField
           helpText="Titre interne clair pour reconnaître la fiche."
           label="Titre"

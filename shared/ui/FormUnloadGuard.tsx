@@ -3,11 +3,15 @@
 import { useEffect, useRef } from "react";
 
 type FormUnloadGuardProps = {
+  draftKey?: string;
   message?: string;
+  preventEnterSubmit?: boolean;
 };
 
 export function FormUnloadGuard({
+  draftKey,
   message = "Des informations sont en cours de saisie. Quitter la page peut les perdre.",
+  preventEnterSubmit = true,
 }: FormUnloadGuardProps) {
   const markerRef = useRef<HTMLSpanElement>(null);
   const isDirtyRef = useRef(false);
@@ -20,9 +24,121 @@ export function FormUnloadGuard({
       return;
     }
 
+    const getNamedFields = () =>
+      Array.from(form.elements).filter(
+        (element): element is
+          | HTMLInputElement
+          | HTMLSelectElement
+          | HTMLTextAreaElement =>
+          element instanceof HTMLInputElement ||
+          element instanceof HTMLSelectElement ||
+          element instanceof HTMLTextAreaElement,
+      );
+
+    const saveDraft = () => {
+      if (!draftKey) {
+        return;
+      }
+
+      const draft: Record<string, string | string[]> = {};
+
+      for (const field of getNamedFields()) {
+        if (!field.name || field instanceof HTMLInputElement && field.type === "file") {
+          continue;
+        }
+
+        if (field instanceof HTMLInputElement && field.type === "checkbox") {
+          const values = Array.isArray(draft[field.name])
+            ? (draft[field.name] as string[])
+            : [];
+
+          if (field.checked) {
+            values.push(field.value);
+          }
+
+          draft[field.name] = values;
+          continue;
+        }
+
+        if (field instanceof HTMLInputElement && field.type === "radio") {
+          if (field.checked) {
+            draft[field.name] = field.value;
+          }
+
+          continue;
+        }
+
+        if (field instanceof HTMLSelectElement && field.multiple) {
+          draft[field.name] = Array.from(field.selectedOptions).map(
+            (option) => option.value,
+          );
+          continue;
+        }
+
+        draft[field.name] = field.value;
+      }
+
+      window.localStorage.setItem(draftKey, JSON.stringify(draft));
+    };
+
+    const restoreDraft = () => {
+      if (!draftKey) {
+        return;
+      }
+
+      const rawDraft = window.localStorage.getItem(draftKey);
+
+      if (!rawDraft) {
+        return;
+      }
+
+      try {
+        const draft = JSON.parse(rawDraft) as Record<string, string | string[]>;
+
+        for (const field of getNamedFields()) {
+          if (!field.name || !(field.name in draft)) {
+            continue;
+          }
+
+          const value = draft[field.name];
+
+          if (field instanceof HTMLInputElement && field.type === "file") {
+            continue;
+          }
+
+          if (field instanceof HTMLInputElement && field.type === "checkbox") {
+            field.checked = Array.isArray(value) && value.includes(field.value);
+            continue;
+          }
+
+          if (field instanceof HTMLInputElement && field.type === "radio") {
+            field.checked = value === field.value;
+            continue;
+          }
+
+          if (field instanceof HTMLSelectElement && field.multiple) {
+            const values = Array.isArray(value) ? value : [value];
+
+            for (const option of Array.from(field.options)) {
+              option.selected = values.includes(option.value);
+            }
+
+            continue;
+          }
+
+          field.value = Array.isArray(value) ? value[0] ?? "" : value;
+        }
+
+        isDirtyRef.current = true;
+      } catch {
+        window.localStorage.removeItem(draftKey);
+      }
+    };
+
     const markDirty = () => {
       if (!isSubmittingRef.current) {
         isDirtyRef.current = true;
+        saveDraft();
       }
     };
 
@@ -65,9 +181,29 @@ export function FormUnloadGuard({
       }
     };
 
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (!preventEnterSubmit || event.key !== "Enter") {
+        return;
+      }
+
+      const target = event.target;
+
+      if (
+        target instanceof HTMLInputElement &&
+        target.type !== "submit" &&
+        target.type !== "button" &&
+        target.type !== "checkbox" &&
+        target.type !== "radio"
+      ) {
+        event.preventDefault();
+      }
+    };
+
+    restoreDraft();
     form.addEventListener("input", markDirty);
     form.addEventListener("change", markDirty);
     form.addEventListener("submit", markSubmitting);
+    form.addEventListener("keydown", handleKeyDown);
     document.addEventListener("click", handleDocumentClick, true);
     window.addEventListener("beforeunload", handleBeforeUnload);
 
@@ -75,10 +211,11 @@ export function FormUnloadGuard({
       form.removeEventListener("input", markDirty);
       form.removeEventListener("change", markDirty);
       form.removeEventListener("submit", markSubmitting);
+      form.removeEventListener("keydown", handleKeyDown);
       document.removeEventListener("click", handleDocumentClick, true);
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
-  }, [message]);
+  }, [draftKey, message, preventEnterSubmit]);
 
   return <span ref={markerRef} hidden />;
 }
