@@ -78,7 +78,7 @@ export function MediaList({ mediaAssets }: MediaListProps) {
             <input
               className="mt-1 w-full rounded-md border border-[var(--border)] px-3 py-2 text-sm"
               onChange={(event) => setQuery(event.currentTarget.value)}
-              placeholder="Nom, titre, texte alternatif, crédit..."
+              placeholder="Titre, description, texte alternatif, crédit..."
               type="search"
               value={query}
             />
@@ -156,12 +156,11 @@ export function MediaList({ mediaAssets }: MediaListProps) {
       </div>
 
       <div className="overflow-x-auto rounded-md border border-[var(--border)] bg-[var(--surface)]">
-        <table className="min-w-[1400px] text-left text-sm">
+        <table className="min-w-[1300px] text-left text-sm">
           <thead className="bg-[var(--background)] text-[var(--muted)]">
             <tr>
               <th className="px-4 py-3 font-medium">Sélection</th>
               <th className="px-4 py-3 font-medium">Média</th>
-              <th className="px-4 py-3 font-medium">Titre</th>
               <th className="px-4 py-3 font-medium">Description</th>
               <th className="px-4 py-3 font-medium">Texte alternatif</th>
               <th className="px-4 py-3 font-medium">Crédit</th>
@@ -177,7 +176,7 @@ export function MediaList({ mediaAssets }: MediaListProps) {
           <tbody>
             {filteredAssets.length === 0 ? (
               <tr>
-                <td className="px-4 py-8 text-center text-[var(--muted)]" colSpan={13}>
+                <td className="px-4 py-8 text-center text-[var(--muted)]" colSpan={12}>
                   Aucun média ne correspond aux filtres.
                 </td>
               </tr>
@@ -186,7 +185,7 @@ export function MediaList({ mediaAssets }: MediaListProps) {
                 <tr className="border-t border-[var(--border)]" key={asset.id}>
                   <td className="px-4 py-3">
                     <input
-                      aria-label={`Sélectionner ${asset.title ?? asset.fileName}`}
+                      aria-label={`Sélectionner ${asset.title ?? "Sans titre"}`}
                       name="media_asset_ids"
                       type="checkbox"
                       value={asset.id}
@@ -211,7 +210,7 @@ export function MediaList({ mediaAssets }: MediaListProps) {
                           className="font-medium hover:text-[var(--accent)]"
                           href={`/media/${asset.id}`}
                         >
-                          {asset.fileName}
+                          {asset.title ?? "Sans titre"}
                         </Link>
                         <p className="text-xs text-[var(--muted)]">
                           Modifier la fiche
@@ -219,7 +218,6 @@ export function MediaList({ mediaAssets }: MediaListProps) {
                       </div>
                     </div>
                   </td>
-                  <td className="px-4 py-3">{asset.title ?? "Non renseigné"}</td>
                   <td className="max-w-xs px-4 py-3 text-[var(--muted)]">
                     {asset.description ?? "Non renseignée"}
                   </td>
@@ -243,8 +241,10 @@ export function MediaList({ mediaAssets }: MediaListProps) {
                       {asset.isAiGenerated ? "Oui" : "Non"}
                     </StatusBadge>
                   </td>
-                  <td className="max-w-xs px-4 py-3 text-[var(--muted)]">
-                    {asset.aiVisualNotice ?? "Non applicable"}
+                  <td className="px-4 py-3">
+                    <StatusBadge tone={asset.aiVisualNotice ? "muted" : "default"}>
+                      {asset.aiVisualNotice ? "Oui" : "Non"}
+                    </StatusBadge>
                   </td>
                   <td className="px-4 py-3">
                     <StatusBadge tone={asset.status === "active" ? "success" : "muted"}>
