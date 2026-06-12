@@ -3,6 +3,7 @@ import { mandatoryAiVisualNotice } from "@/modules/media/domain/media-asset";
 import { deleteSelectedMediaAssetsAction } from "@/services/media/delete-media-assets";
 import { getMediaAssets } from "@/services/media/get-media-assets";
 import { ConfirmSubmitButton } from "@/shared/ui/ConfirmSubmitButton";
+import { MediaQuickDropzone } from "@/app/(app)/media/MediaQuickDropzone";
 import { PageTitle } from "@/shared/ui/PageTitle";
 import { StatusBadge } from "@/shared/ui/StatusBadge";
 
@@ -59,6 +60,8 @@ export default async function MediaPage({ searchParams }: MediaPageProps) {
           {errorMessage}
         </p>
       ) : null}
+
+      <MediaQuickDropzone />
 
       <form
         action={deleteSelectedMediaAssetsAction}
