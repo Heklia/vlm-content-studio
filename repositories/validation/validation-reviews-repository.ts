@@ -14,7 +14,7 @@ type ChannelVariantJoinRow =
   Database["public"]["Tables"]["channel_variants"]["Row"] & {
     channels: { id: string; key: string; label: string; status: ChannelStatus } | null;
     master_contents: { id: string; title: string } | null;
-    wordpress_categories: { id: string; label: string } | null;
+    wordpress_categories: { id: string; label: string; wordpress_id: number | null } | null;
   };
 
 type ProfileJoinRow = {
@@ -69,7 +69,13 @@ function mapChannelVariant(row: ChannelVariantJoinRow) {
     status: row.status,
     title: row.title,
     updatedAt: row.updated_at,
-    wordpressCategory: row.wordpress_categories,
+    wordpressCategory: row.wordpress_categories
+      ? {
+          id: row.wordpress_categories.id,
+          label: row.wordpress_categories.label,
+          wordpressId: row.wordpress_categories.wordpress_id,
+        }
+      : null,
     wordpressCategoryId: row.wordpress_category_id,
   };
 }
@@ -103,7 +109,7 @@ const validationReviewSelect = `
     *,
     channels ( id, key, label, status ),
     master_contents ( id, title ),
-    wordpress_categories ( id, label )
+    wordpress_categories ( id, label, wordpress_id )
   ),
   requested_by_profile:user_profiles!validation_reviews_requested_by_profile_id_fkey (
     id,

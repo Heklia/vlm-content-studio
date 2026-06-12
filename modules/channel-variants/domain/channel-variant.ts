@@ -52,7 +52,7 @@ export type ChannelVariant = {
 export type ChannelVariantListItem = ChannelVariant & {
   channel: Pick<Channel, "id" | "key" | "label" | "status"> | null;
   masterContent: Pick<MasterContent, "id" | "title"> | null;
-  wordpressCategory: Pick<WordPressCategory, "id" | "label"> | null;
+  wordpressCategory: Pick<WordPressCategory, "id" | "label" | "wordpressId"> | null;
 };
 
 export type ChannelVariantDetail = ChannelVariantListItem;

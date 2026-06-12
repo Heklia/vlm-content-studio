@@ -39,7 +39,7 @@ function mapChannelVariant(row: ChannelVariantRow): ChannelVariant {
 type ChannelVariantListRow = ChannelVariantRow & {
   channels: { id: string; key: string; label: string; status: ChannelStatus } | null;
   master_contents: { id: string; title: string } | null;
-  wordpress_categories: { id: string; label: string } | null;
+  wordpress_categories: { id: string; label: string; wordpress_id: number | null } | null;
 };
 
 function mapChannelVariantListItem(
@@ -49,7 +49,13 @@ function mapChannelVariantListItem(
     ...mapChannelVariant(row),
     channel: row.channels,
     masterContent: row.master_contents,
-    wordpressCategory: row.wordpress_categories,
+    wordpressCategory: row.wordpress_categories
+      ? {
+          id: row.wordpress_categories.id,
+          label: row.wordpress_categories.label,
+          wordpressId: row.wordpress_categories.wordpress_id,
+        }
+      : null,
   };
 }
 
@@ -63,7 +69,7 @@ export async function listChannelVariants(
         *,
         channels ( id, key, label, status ),
         master_contents ( id, title ),
-        wordpress_categories ( id, label )
+        wordpress_categories ( id, label, wordpress_id )
       `,
     )
     .order("created_at", { ascending: false });
@@ -86,7 +92,7 @@ export async function getChannelVariantById(
         *,
         channels ( id, key, label, status ),
         master_contents ( id, title ),
-        wordpress_categories ( id, label )
+        wordpress_categories ( id, label, wordpress_id )
       `,
     )
     .eq("id", id)
@@ -181,7 +187,7 @@ export async function listReadyChannelVariants(
         *,
         channels ( id, key, label, status ),
         master_contents ( id, title ),
-        wordpress_categories ( id, label )
+        wordpress_categories ( id, label, wordpress_id )
       `,
     )
     .eq("status", "ready")

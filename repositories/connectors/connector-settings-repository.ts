@@ -45,3 +45,40 @@ export async function listConnectorSettings(
   return data.map(mapConnectorSetting);
 }
 
+export async function getConnectorSettingByProvider(
+  supabase: SupabaseClient<Database>,
+  provider: ConnectorProvider,
+) {
+  const { data, error } = await supabase
+    .from("connector_settings")
+    .select("*")
+    .eq("provider", provider)
+    .maybeSingle();
+
+  if (error) {
+    throw error;
+  }
+
+  return data ? mapConnectorSetting(data) : null;
+}
+
+export async function updateConnectorSetting(
+  supabase: SupabaseClient<Database>,
+  id: string,
+  connectorSetting: Database["public"]["Tables"]["connector_settings"]["Update"],
+) {
+  const connectorSettingsTable = supabase.from("connector_settings");
+  const { data, error } = await connectorSettingsTable
+    .update(
+      connectorSetting as Parameters<typeof connectorSettingsTable.update>[0],
+    )
+    .eq("id", id)
+    .select("*")
+    .single();
+
+  if (error) {
+    throw error;
+  }
+
+  return mapConnectorSetting(data);
+}
