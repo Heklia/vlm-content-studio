@@ -17,7 +17,6 @@ export function FormUnloadGuard({
   const isDirtyRef = useRef(false);
   const hasRestoredRef = useRef(false);
   const isSubmittingRef = useRef(false);
-  const saveTimeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
     const form = markerRef.current?.closest("form");
@@ -83,20 +82,6 @@ export function FormUnloadGuard({
       window.localStorage.setItem(draftKey, JSON.stringify(draft));
     };
 
-    const scheduleSaveDraft = () => {
-      if (!draftKey) {
-        return;
-      }
-
-      if (saveTimeoutRef.current) {
-        window.clearTimeout(saveTimeoutRef.current);
-      }
-
-      saveTimeoutRef.current = window.setTimeout(() => {
-        saveDraft();
-      }, 120);
-    };
-
     const restoreDraft = () => {
       if (!draftKey) {
         return;
@@ -155,7 +140,7 @@ export function FormUnloadGuard({
     const markDirty = () => {
       if (!isSubmittingRef.current) {
         isDirtyRef.current = true;
-        scheduleSaveDraft();
+        saveDraft({ force: true });
       }
     };
 
@@ -243,10 +228,6 @@ export function FormUnloadGuard({
     window.addEventListener("beforeunload", handleBeforeUnload);
 
     return () => {
-      if (saveTimeoutRef.current) {
-        window.clearTimeout(saveTimeoutRef.current);
-      }
-
       if (!isSubmittingRef.current) {
         saveDraft({ force: isDirtyRef.current });
       }

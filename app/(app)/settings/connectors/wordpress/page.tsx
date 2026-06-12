@@ -7,6 +7,7 @@ import {
   saveWordPressConnectorAction,
   testWordPressConnectorAction,
 } from "@/services/connectors/wordpress-actions";
+import { FormUnloadGuard } from "@/shared/ui/FormUnloadGuard";
 import { PageTitle } from "@/shared/ui/PageTitle";
 import { StatusBadge } from "@/shared/ui/StatusBadge";
 import { SubmitButton } from "@/shared/ui/SubmitButton";
@@ -102,6 +103,7 @@ export default async function WordPressConnectorPage({
         action={saveWordPressConnectorAction}
         className="space-y-5 rounded-md border border-[var(--border)] bg-[var(--surface)] p-6"
       >
+        <FormUnloadGuard draftKey="vlm-content-studio:connectors:wordpress" />
         <div>
           <label className="text-sm font-medium" htmlFor="site_url">
             URL du site WordPress
