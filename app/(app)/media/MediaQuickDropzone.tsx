@@ -40,11 +40,11 @@ export function MediaQuickDropzone() {
   return (
     <form
       action={uploadMediaAsset}
-      className="rounded-md border border-[var(--border)] bg-[var(--surface)] p-5"
+      className="h-full rounded-md border border-[var(--border)] bg-[var(--surface)] p-5"
     >
       <input name="primary_file_index" type="hidden" value="0" />
       <div
-        className={`rounded-md border border-dashed p-6 text-center transition ${
+        className={`flex min-h-32 flex-col items-center justify-center rounded-md border border-dashed p-6 text-center transition ${
           isDragging
             ? "border-[var(--accent)] bg-[var(--background)]"
             : "border-[var(--border)]"
