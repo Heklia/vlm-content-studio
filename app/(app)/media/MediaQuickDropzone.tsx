@@ -22,6 +22,10 @@ export function MediaQuickDropzone() {
   );
 
   function setFiles(files: File[]) {
+    if (files.length === 0) {
+      return;
+    }
+
     setSelectedFiles(files);
 
     if (!fileInputRef.current) {
@@ -37,6 +41,10 @@ export function MediaQuickDropzone() {
     fileInputRef.current.files = dataTransfer.files;
   }
 
+  function openFilePicker() {
+    fileInputRef.current?.click();
+  }
+
   return (
     <form
       action={uploadMediaAsset}
@@ -49,19 +57,39 @@ export function MediaQuickDropzone() {
             ? "border-[var(--accent)] bg-[var(--background)]"
             : "border-[var(--border)]"
         }`}
-        onClick={() => fileInputRef.current?.click()}
+        onClick={(event) => {
+          if (event.target === fileInputRef.current) {
+            return;
+          }
+
+          openFilePicker();
+        }}
+        onDragEnter={(event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          setIsDragging(true);
+        }}
         onDragLeave={(event) => {
           event.preventDefault();
+          event.stopPropagation();
           setIsDragging(false);
         }}
         onDragOver={(event) => {
           event.preventDefault();
+          event.stopPropagation();
           setIsDragging(true);
         }}
         onDrop={(event) => {
           event.preventDefault();
+          event.stopPropagation();
           setIsDragging(false);
           setFiles(Array.from(event.dataTransfer.files));
+        }}
+        onKeyDown={(event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            openFilePicker();
+          }
         }}
         role="button"
         tabIndex={0}
@@ -77,6 +105,9 @@ export function MediaQuickDropzone() {
           name="files"
           onChange={(event) => {
             setFiles(Array.from(event.currentTarget.files ?? []));
+          }}
+          onClick={(event) => {
+            event.stopPropagation();
           }}
           ref={fileInputRef}
           required

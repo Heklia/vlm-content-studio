@@ -23,6 +23,10 @@ export function MediaUploadForm() {
   const totalSelectedSize = selectedFiles.reduce((total, file) => total + file.size, 0);
 
   function setFiles(files: File[]) {
+    if (files.length === 0) {
+      return;
+    }
+
     setSelectedFiles(files);
     setPrimaryFileIndex("0");
 
@@ -37,6 +41,10 @@ export function MediaUploadForm() {
     }
 
     fileInputRef.current.files = dataTransfer.files;
+  }
+
+  function openFilePicker() {
+    fileInputRef.current?.click();
   }
 
   return (
@@ -70,19 +78,42 @@ export function MediaUploadForm() {
               ? "border-[var(--accent)] bg-[var(--background)]"
               : "border-[var(--border)]"
           }`}
+          onClick={(event) => {
+            if (event.target === fileInputRef.current) {
+              return;
+            }
+
+            openFilePicker();
+          }}
+          onDragEnter={(event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            setIsDragging(true);
+          }}
           onDragLeave={(event) => {
             event.preventDefault();
+            event.stopPropagation();
             setIsDragging(false);
           }}
           onDragOver={(event) => {
             event.preventDefault();
+            event.stopPropagation();
             setIsDragging(true);
           }}
           onDrop={(event) => {
             event.preventDefault();
+            event.stopPropagation();
             setIsDragging(false);
             setFiles(Array.from(event.dataTransfer.files));
           }}
+          onKeyDown={(event) => {
+            if (event.key === "Enter" || event.key === " ") {
+              event.preventDefault();
+              openFilePicker();
+            }
+          }}
+          role="button"
+          tabIndex={0}
         >
           <p className="text-sm font-medium">
             Glissez-déposez vos médias ici
@@ -96,6 +127,9 @@ export function MediaUploadForm() {
             name="files"
             onChange={(event) => {
               setFiles(Array.from(event.currentTarget.files ?? []));
+            }}
+            onClick={(event) => {
+              event.stopPropagation();
             }}
             ref={fileInputRef}
             required
