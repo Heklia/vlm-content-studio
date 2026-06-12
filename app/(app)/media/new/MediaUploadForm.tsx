@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { mandatoryAiVisualNotice } from "@/modules/media/domain/media-asset";
 import { uploadMediaAsset } from "@/services/media/upload-media-asset";
 import { FormField } from "@/shared/ui/FormField";
@@ -18,7 +18,26 @@ function formatFileSize(size: number) {
 export function MediaUploadForm() {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [primaryFileIndex, setPrimaryFileIndex] = useState("0");
+  const [isDragging, setIsDragging] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const totalSelectedSize = selectedFiles.reduce((total, file) => total + file.size, 0);
+
+  function setFiles(files: File[]) {
+    setSelectedFiles(files);
+    setPrimaryFileIndex("0");
+
+    if (!fileInputRef.current) {
+      return;
+    }
+
+    const dataTransfer = new DataTransfer();
+
+    for (const file of files) {
+      dataTransfer.items.add(file);
+    }
+
+    fileInputRef.current.files = dataTransfer.files;
+  }
 
   return (
     <form
@@ -45,18 +64,44 @@ export function MediaUploadForm() {
         helpText="Sélectionnez un ou plusieurs fichiers. Les images auront un aperçu dans la bibliothèque ; les autres fichiers seront listés par type."
         label="Fichiers à importer"
       >
-        <input
-          className="w-full rounded-md border border-[var(--border)] px-3 py-2"
-          multiple
-          name="files"
-          onChange={(event) => {
-            const files = Array.from(event.currentTarget.files ?? []);
-            setSelectedFiles(files);
-            setPrimaryFileIndex("0");
+        <div
+          className={`rounded-md border border-dashed p-6 text-center transition ${
+            isDragging
+              ? "border-[var(--accent)] bg-[var(--background)]"
+              : "border-[var(--border)]"
+          }`}
+          onDragLeave={(event) => {
+            event.preventDefault();
+            setIsDragging(false);
           }}
-          required
-          type="file"
-        />
+          onDragOver={(event) => {
+            event.preventDefault();
+            setIsDragging(true);
+          }}
+          onDrop={(event) => {
+            event.preventDefault();
+            setIsDragging(false);
+            setFiles(Array.from(event.dataTransfer.files));
+          }}
+        >
+          <p className="text-sm font-medium">
+            Glissez-déposez vos médias ici
+          </p>
+          <p className="mt-1 text-xs text-[var(--muted)]">
+            ou sélectionnez plusieurs fichiers depuis votre ordinateur.
+          </p>
+          <input
+            className="mt-4 w-full rounded-md border border-[var(--border)] px-3 py-2"
+            multiple
+            name="files"
+            onChange={(event) => {
+              setFiles(Array.from(event.currentTarget.files ?? []));
+            }}
+            ref={fileInputRef}
+            required
+            type="file"
+          />
+        </div>
       </FormField>
 
       {selectedFiles.length > 0 ? (

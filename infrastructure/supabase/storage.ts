@@ -21,6 +21,24 @@ export async function uploadPrivateFile(
   return data;
 }
 
+export async function removePrivateFiles(
+  supabase: SupabaseClient<Database>,
+  bucket: string,
+  paths: string[],
+) {
+  if (paths.length === 0) {
+    return [];
+  }
+
+  const { data, error } = await supabase.storage.from(bucket).remove(paths);
+
+  if (error) {
+    throw error;
+  }
+
+  return data;
+}
+
 export async function createSignedMediaUrl(
   supabase: SupabaseClient<Database>,
   path: string,
@@ -35,4 +53,3 @@ export async function createSignedMediaUrl(
 
   return data.signedUrl;
 }
-

@@ -19,3 +19,20 @@ export async function createSourceSheetMediaRelations(
   }
 }
 
+export async function deleteSourceSheetMediaRelationsByMediaAssetIds(
+  supabase: SupabaseClient<Database>,
+  mediaAssetIds: string[],
+) {
+  if (mediaAssetIds.length === 0) {
+    return;
+  }
+
+  const { error } = await supabase
+    .from("source_sheet_media")
+    .delete()
+    .in("media_asset_id", mediaAssetIds);
+
+  if (error) {
+    throw error;
+  }
+}

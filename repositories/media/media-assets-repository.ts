@@ -40,6 +40,43 @@ export async function listMediaAssets(supabase: SupabaseClient<Database>) {
   return data.map(mapMediaAsset);
 }
 
+export async function listMediaAssetsByIds(
+  supabase: SupabaseClient<Database>,
+  ids: string[],
+) {
+  if (ids.length === 0) {
+    return [];
+  }
+
+  const { data, error } = await supabase
+    .from("media_assets")
+    .select("*")
+    .in("id", ids);
+
+  if (error) {
+    throw error;
+  }
+
+  return data.map(mapMediaAsset);
+}
+
+export async function getMediaAssetById(
+  supabase: SupabaseClient<Database>,
+  id: string,
+) {
+  const { data, error } = await supabase
+    .from("media_assets")
+    .select("*")
+    .eq("id", id)
+    .maybeSingle();
+
+  if (error) {
+    throw error;
+  }
+
+  return data ? mapMediaAsset(data) : null;
+}
+
 export async function createMediaAsset(
   supabase: SupabaseClient<Database>,
   mediaAsset: Database["public"]["Tables"]["media_assets"]["Insert"],
@@ -55,4 +92,38 @@ export async function createMediaAsset(
   }
 
   return mapMediaAsset(data);
+}
+
+export async function updateMediaAsset(
+  supabase: SupabaseClient<Database>,
+  id: string,
+  mediaAsset: Database["public"]["Tables"]["media_assets"]["Update"],
+) {
+  const mediaAssetsTable = supabase.from("media_assets");
+  const { data, error } = await mediaAssetsTable
+    .update(mediaAsset as Parameters<typeof mediaAssetsTable.update>[0])
+    .eq("id", id)
+    .select("*")
+    .single();
+
+  if (error) {
+    throw error;
+  }
+
+  return mapMediaAsset(data);
+}
+
+export async function deleteMediaAssetsByIds(
+  supabase: SupabaseClient<Database>,
+  ids: string[],
+) {
+  if (ids.length === 0) {
+    return;
+  }
+
+  const { error } = await supabase.from("media_assets").delete().in("id", ids);
+
+  if (error) {
+    throw error;
+  }
 }
