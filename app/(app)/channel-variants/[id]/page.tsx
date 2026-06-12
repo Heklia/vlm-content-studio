@@ -1,15 +1,24 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
   channelVariantStatusLabels,
 } from "@/modules/channel-variants/domain/channel-variant";
 import { generationModeLabels } from "@/modules/master-content/domain/master-content";
 import { getChannelVariant } from "@/services/channel-variants/get-channel-variant";
+import {
+  invalidateChannelVariantAction,
+  validateChannelVariantAction,
+} from "@/services/channel-variants/manage-channel-variants";
 import { PageTitle } from "@/shared/ui/PageTitle";
 import { StatusBadge } from "@/shared/ui/StatusBadge";
+import { SubmitButton } from "@/shared/ui/SubmitButton";
 
 type ChannelVariantDetailPageProps = {
   params: Promise<{
     id: string;
+  }>;
+  searchParams: Promise<{
+    saved?: string;
   }>;
 };
 
@@ -32,8 +41,9 @@ function DetailBlock({
 
 export default async function ChannelVariantDetailPage({
   params,
+  searchParams,
 }: ChannelVariantDetailPageProps) {
-  const { id } = await params;
+  const [{ id }, { saved }] = await Promise.all([params, searchParams]);
   const variant = await getChannelVariant(id);
 
   if (!variant) {
@@ -47,6 +57,12 @@ export default async function ChannelVariantDetailPage({
         title={variant.title}
         description="Version multicanale préparée manuellement. Elle n’est pas publiée et aucun connecteur externe n’est appelé."
       />
+
+      {saved ? (
+        <p className="rounded-md border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+          Déclinaison enregistrée.
+        </p>
+      ) : null}
 
       <div className="flex flex-wrap gap-3">
         <StatusBadge tone={variant.status === "ready" ? "success" : "default"}>
@@ -109,6 +125,43 @@ export default async function ChannelVariantDetailPage({
           {variant.aiProviderKey ?? "non renseigné"} · Modèle :{" "}
           {variant.aiModelKey ?? "non renseigné"}
         </p>
+      </div>
+
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-[var(--border)] bg-[var(--surface)] p-4">
+        <div>
+          <p className="text-sm font-medium">Actions après lecture</p>
+          <p className="mt-1 text-sm text-[var(--muted)]">
+            Validez la déclinaison, renvoyez-la en brouillon ou modifiez son contenu.
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <form action={validateChannelVariantAction}>
+            <input name="channel_variant_id" type="hidden" value={variant.id} />
+            <input name="redirect_to" type="hidden" value={`/channel-variants/${variant.id}`} />
+            <SubmitButton
+              className="rounded-md bg-emerald-700 px-4 py-2 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-60"
+              pendingLabel="Validation..."
+            >
+              Valider
+            </SubmitButton>
+          </form>
+          <form action={invalidateChannelVariantAction}>
+            <input name="channel_variant_id" type="hidden" value={variant.id} />
+            <input name="redirect_to" type="hidden" value={`/channel-variants/${variant.id}`} />
+            <SubmitButton
+              className="rounded-md border border-[var(--border)] px-4 py-2 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-60"
+              pendingLabel="Invalidation..."
+            >
+              Invalider
+            </SubmitButton>
+          </form>
+          <Link
+            className="rounded-md bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-white"
+            href={`/channel-variants/${variant.id}/edit`}
+          >
+            Modifier
+          </Link>
+        </div>
       </div>
     </section>
   );

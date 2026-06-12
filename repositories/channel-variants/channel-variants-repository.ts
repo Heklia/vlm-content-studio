@@ -137,6 +137,40 @@ export async function updateChannelVariantStatus(
   return mapChannelVariant(data);
 }
 
+export async function updateChannelVariant(
+  supabase: SupabaseClient<Database>,
+  id: string,
+  channelVariant: Database["public"]["Tables"]["channel_variants"]["Update"],
+) {
+  const channelVariantsTable = supabase.from("channel_variants");
+  const { data, error } = await channelVariantsTable
+    .update(channelVariant as Parameters<typeof channelVariantsTable.update>[0])
+    .eq("id", id)
+    .select("*")
+    .single();
+
+  if (error) {
+    throw error;
+  }
+
+  return mapChannelVariant(data);
+}
+
+export async function deleteChannelVariantsByIds(
+  supabase: SupabaseClient<Database>,
+  ids: string[],
+) {
+  if (ids.length === 0) {
+    return;
+  }
+
+  const { error } = await supabase.from("channel_variants").delete().in("id", ids);
+
+  if (error) {
+    throw error;
+  }
+}
+
 export async function listReadyChannelVariants(
   supabase: SupabaseClient<Database>,
 ) {
