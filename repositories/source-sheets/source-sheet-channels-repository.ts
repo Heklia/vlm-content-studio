@@ -19,3 +19,16 @@ export async function createSourceSheetChannelRelations(
   }
 }
 
+export async function deleteSourceSheetChannelRelationsBySourceSheetId(
+  supabase: SupabaseClient<Database>,
+  sourceSheetId: string,
+) {
+  const { error } = await supabase
+    .from("source_sheet_channels")
+    .delete()
+    .eq("source_sheet_id", sourceSheetId);
+
+  if (error) {
+    throw error;
+  }
+}

@@ -1,8 +1,11 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
   sourceSheetStatusLabels,
 } from "@/modules/source-sheets/domain/source-sheet";
+import { deleteSourceSheetAction } from "@/services/source-sheets/manage-source-sheet";
 import { getSourceSheet } from "@/services/source-sheets/get-source-sheet";
+import { ConfirmSubmitButton } from "@/shared/ui/ConfirmSubmitButton";
 import { PageTitle } from "@/shared/ui/PageTitle";
 import { StatusBadge } from "@/shared/ui/StatusBadge";
 
@@ -10,6 +13,15 @@ type SourceSheetDetailPageProps = {
   params: Promise<{
     id: string;
   }>;
+  searchParams: Promise<{
+    error?: string;
+    saved?: string;
+  }>;
+};
+
+const errorMessages: Record<string, string> = {
+  forbidden: "Votre rôle ne permet pas de supprimer cette fiche source.",
+  missing_source_sheet: "La fiche source est introuvable.",
 };
 
 function DetailBlock({
@@ -31,21 +43,44 @@ function DetailBlock({
 
 export default async function SourceSheetDetailPage({
   params,
+  searchParams,
 }: SourceSheetDetailPageProps) {
-  const { id } = await params;
+  const [{ id }, { error, saved }] = await Promise.all([params, searchParams]);
   const sourceSheet = await getSourceSheet(id);
 
   if (!sourceSheet) {
     notFound();
   }
 
+  const errorMessage = error ? errorMessages[error] : null;
+
   return (
     <section className="space-y-6">
-      <PageTitle
-        eyebrow="Fiche source"
-        title={sourceSheet.title}
-        description="Lecture détaillée de la matière éditoriale. La génération de contenu sera ajoutée dans un sprint ultérieur."
-      />
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <PageTitle
+          eyebrow="Fiche source"
+          title={sourceSheet.title}
+          description="Lecture détaillée de la matière éditoriale. La génération de contenu sera ajoutée dans un sprint ultérieur."
+        />
+        <Link
+          className="rounded-md bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-white"
+          href={`/source-sheets/${sourceSheet.id}/edit`}
+        >
+          Modifier
+        </Link>
+      </div>
+
+      {errorMessage ? (
+        <p className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+          {errorMessage}
+        </p>
+      ) : null}
+
+      {saved ? (
+        <p className="rounded-md border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+          Fiche source enregistrée.
+        </p>
+      ) : null}
 
       <div className="flex flex-wrap gap-3">
         <StatusBadge tone={sourceSheet.status === "ready" ? "success" : "default"}>
@@ -109,7 +144,31 @@ export default async function SourceSheetDetailPage({
           )}
         </div>
       </div>
+
+      <form
+        action={deleteSourceSheetAction}
+        className="rounded-md border border-red-200 bg-red-50 p-5"
+      >
+        <input name="source_sheet_id" type="hidden" value={sourceSheet.id} />
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <p className="text-sm font-semibold text-red-900">
+              Supprimer cette fiche source
+            </p>
+            <p className="mt-1 text-sm text-red-800">
+              Cette action supprime la fiche source et ses associations aux
+              canaux et aux médias.
+            </p>
+          </div>
+          <ConfirmSubmitButton
+            className="rounded-md bg-red-700 px-4 py-2 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-60"
+            confirmMessage="Supprimer cette fiche source ?"
+            pendingLabel="Suppression..."
+          >
+            Supprimer
+          </ConfirmSubmitButton>
+        </div>
+      </form>
     </section>
   );
 }
-

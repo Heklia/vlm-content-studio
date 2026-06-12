@@ -36,3 +36,17 @@ export async function deleteSourceSheetMediaRelationsByMediaAssetIds(
     throw error;
   }
 }
+
+export async function deleteSourceSheetMediaRelationsBySourceSheetId(
+  supabase: SupabaseClient<Database>,
+  sourceSheetId: string,
+) {
+  const { error } = await supabase
+    .from("source_sheet_media")
+    .delete()
+    .eq("source_sheet_id", sourceSheetId);
+
+  if (error) {
+    throw error;
+  }
+}

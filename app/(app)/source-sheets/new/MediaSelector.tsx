@@ -10,6 +10,8 @@ type MediaSelectorAsset = {
 };
 
 type MediaSelectorProps = {
+  initialPrimaryMediaAssetId?: string;
+  initialSelectedIds?: string[];
   mediaAssets: MediaSelectorAsset[];
 };
 
@@ -17,11 +19,17 @@ function getMediaLabel(asset: MediaSelectorAsset) {
   return asset.title ?? asset.fileName;
 }
 
-export function MediaSelector({ mediaAssets }: MediaSelectorProps) {
-  const [isOpen, setIsOpen] = useState(false);
+export function MediaSelector({
+  initialPrimaryMediaAssetId = "",
+  initialSelectedIds = [],
+  mediaAssets,
+}: MediaSelectorProps) {
+  const [isOpen, setIsOpen] = useState(true);
   const [query, setQuery] = useState("");
-  const [selectedIds, setSelectedIds] = useState<string[]>([]);
-  const [primaryMediaAssetId, setPrimaryMediaAssetId] = useState("");
+  const [selectedIds, setSelectedIds] = useState<string[]>(initialSelectedIds);
+  const [primaryMediaAssetId, setPrimaryMediaAssetId] = useState(
+    initialPrimaryMediaAssetId,
+  );
 
   const selectedAssets = mediaAssets.filter((asset) =>
     selectedIds.includes(asset.id),
@@ -36,8 +44,8 @@ export function MediaSelector({ mediaAssets }: MediaSelectorProps) {
 
     return mediaAssets.filter((asset) => {
       const searchableText = [
-        asset.fileName,
         asset.title ?? "",
+        asset.fileName,
         asset.altText ?? "",
       ]
         .join(" ")
@@ -71,7 +79,7 @@ export function MediaSelector({ mediaAssets }: MediaSelectorProps) {
     <fieldset className="rounded-md border border-[var(--border)] p-4">
       <legend className="px-1 text-sm font-medium">Médias associés</legend>
       <p className="mt-1 text-xs leading-5 text-[var(--muted)]">
-        Recherchez par nom de fichier, titre ou texte alternatif. Les médias
+        Recherchez par titre, nom de fichier ou texte alternatif. Les médias
         sélectionnés seront associés à la fiche source.
       </p>
 
@@ -97,7 +105,7 @@ export function MediaSelector({ mediaAssets }: MediaSelectorProps) {
                 setQuery(event.currentTarget.value);
                 setIsOpen(true);
               }}
-              placeholder="Rechercher un média par nom ou texte alternatif"
+              placeholder="Rechercher un média par titre, nom ou texte alternatif"
               type="search"
               value={query}
             />
@@ -139,9 +147,11 @@ export function MediaSelector({ mediaAssets }: MediaSelectorProps) {
                           <span className="block font-medium">
                             {getMediaLabel(asset)}
                           </span>
-                          <span className="mt-1 block text-xs text-[var(--muted)]">
-                            Fichier : {asset.fileName}
-                          </span>
+                          {asset.title ? null : (
+                            <span className="mt-1 block text-xs text-[var(--muted)]">
+                              Titre non renseigné
+                            </span>
+                          )}
                           <span className="mt-1 block text-xs text-[var(--muted)]">
                             Texte alternatif : {asset.altText ?? "Non renseigné"}
                           </span>

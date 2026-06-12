@@ -164,3 +164,32 @@ export async function createSourceSheet(
   return mapSourceSheet(data);
 }
 
+export async function updateSourceSheet(
+  supabase: SupabaseClient<Database>,
+  id: string,
+  sourceSheet: Database["public"]["Tables"]["source_sheets"]["Update"],
+) {
+  const sourceSheetsTable = supabase.from("source_sheets");
+  const { data, error } = await sourceSheetsTable
+    .update(sourceSheet as Parameters<typeof sourceSheetsTable.update>[0])
+    .eq("id", id)
+    .select("*")
+    .single();
+
+  if (error) {
+    throw error;
+  }
+
+  return mapSourceSheet(data);
+}
+
+export async function deleteSourceSheetById(
+  supabase: SupabaseClient<Database>,
+  id: string,
+) {
+  const { error } = await supabase.from("source_sheets").delete().eq("id", id);
+
+  if (error) {
+    throw error;
+  }
+}
